@@ -72,9 +72,16 @@
     <Compile Include="MDIParent1.Designer.cs">
       <DependentUpon>MDIParent1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\GenerateSettings.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TempSettingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TempSettingControl.Designer.cs">
+      <DependentUpon>TempSettingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Button.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -140,6 +147,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TempSettingControl.resx">
+      <DependentUpon>TempSettingControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -149,6 +159,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Temps\Controller.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -366,5 +379,6 @@
   <ItemGroup>
     <None Include="Resources\TitleManageEmployeeModify.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

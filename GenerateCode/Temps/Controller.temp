@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using DataTransferObjects.System;
+using Service.SystemManage;
+using ViewModels;
+using Web.Framework.BaseControllers;
+using YPY.Asp.Net.DataTransferObjects;
+
+namespace WebMvc.Areas.SystemManage.Controllers
+{
+    public class AreaDataController : BaseAdminController
+    {
+        public AreaDataService AreaDataService { get; set; }
+        /// <summary>
+        /// 取指定产品的型号
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public JsonResult GetChildrenModels(AreaDataSearchDto dto)
+        {
+            var area = AreaDataService.GetChildren(dto);
+
+            var viewModels = area.Select(m => new AreaDataSelectViewModel { id = m.Code, text = m.Name, ParentCode = m.ParentCode}).ToList();
+            var result = new ResultInfo<AreaDataSelectViewModel>
+            {
+                IsSuccess = true,
+                Data = viewModels,
+                Total = dto.PageCount
+            };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+    }
+}

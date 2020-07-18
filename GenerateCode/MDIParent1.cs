@@ -139,5 +139,10 @@ namespace GenerateCode
                 child.Show();
             }
         }
+
+        private void MDIParent1_Load(object sender, EventArgs e)
+        {
+            tsmiGenerate.PerformClick();
+        }
     }
 }
