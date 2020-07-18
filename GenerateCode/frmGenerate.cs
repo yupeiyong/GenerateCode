@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Winform;
+using Winform.Models;
 
 namespace WinForm
 {
@@ -154,6 +155,26 @@ namespace WinForm
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
+            var modelFileNames=new List<string>();
+            var generateSettings=new List<GenerateSettings>();
+            foreach (var control in pnlTempSettings.Controls)
+            {
+                var tsControl = control as TempSettingControl;
+                if (tsControl != null)
+                {
+                    var settings = tsControl.GetSettings();
+                    if(string.IsNullOrWhiteSpace(settings.TemplateFileName))
+                        throw new Exception("模板文件名为空！");
+
+                    if(string.IsNullOrWhiteSpace(settings.Extention))
+                        throw new Exception("文件扩展名不能为空！");
+
+                    if(string.IsNullOrWhiteSpace(settings.DestPath))
+                        throw new Exception("目标文件夹不能为空！");
+
+                    generateSettings.Add(settings);
+                }
+            }
 
         }
 
@@ -173,6 +194,7 @@ namespace WinForm
                 lc.Width = pnlTempSettings.Width - 10;
                 lc.Location = new Point(5, index * lc.Height + 5 * (index + 1));
                 pnlTempSettings.Controls.Add(lc);
+                index++;
             }
         }
     }

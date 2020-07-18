@@ -44,6 +44,7 @@
             // 
             this.txtTempName.Location = new System.Drawing.Point(81, 7);
             this.txtTempName.Name = "txtTempName";
+            this.txtTempName.ReadOnly = true;
             this.txtTempName.Size = new System.Drawing.Size(264, 21);
             this.txtTempName.TabIndex = 0;
             // 

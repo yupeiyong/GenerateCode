@@ -101,9 +101,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(124, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(305, 12);
+            this.label1.Size = new System.Drawing.Size(575, 12);
             this.label1.TabIndex = 2;
-            this.label1.Text = "目标路径如果包含模型类名称请使用{model_class_name}";
+            this.label1.Text = "目标路径如果包含模型类名称请使用{model_class_name},如果包含父级文件夹名请使用{parent_path_name}";
             // 
             // frmGenerate
             // 
