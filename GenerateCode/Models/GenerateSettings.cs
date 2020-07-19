@@ -27,5 +27,10 @@ namespace Winform.Models
         /// 如果存在文件，是否覆盖
         /// </summary>
         public bool OverWrite { get; set; }
+
+        /// <summary>
+        /// 是否生成代码
+        /// </summary>
+        public bool IsGenerate { get; set; }
     }
 }

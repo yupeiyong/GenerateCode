@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="Helpers\DataGridViewHelper.cs" />
     <Compile Include="Helpers\DataValid.cs" />
+    <Compile Include="Helpers\OpenFile.cs" />
     <Compile Include="Helpers\PageData.cs" />
     <Compile Include="MDIParent1.cs">
       <SubType>Form</SubType>

@@ -15,6 +15,21 @@ namespace WinForm
 {
     public partial class frmGenerate : Form
     {
+        /// <summary>
+        /// 节点类型
+        /// </summary>
+        public enum NodeType
+        {
+            /// <summary>
+            /// 文件夹
+            /// </summary>
+            Directory=0,
+            /// <summary>
+            /// 文件
+            /// </summary>
+            File=1
+        }
+
         public frmGenerate()
         {
             InitializeComponent();
@@ -121,7 +136,7 @@ namespace WinForm
                         {
                             TreeNode subNode = new TreeNode(new DirectoryInfo(dic).Name); //实例化
                             subNode.Name = new DirectoryInfo(dic).FullName;               //完整目录
-                            subNode.Tag = subNode.Name;
+                            subNode.Tag = NodeType.Directory;
                             subNode.ImageIndex = IconIndexes.ClosedFolder;       //获取节点显示图片
                             subNode.SelectedImageIndex = IconIndexes.OpenFolder; //选择节点显示图片
                             tNode.Nodes.Add(subNode);
@@ -134,7 +149,7 @@ namespace WinForm
                         {
                             TreeNode subNode = new TreeNode(new DirectoryInfo(f).Name); //实例化
                             subNode.Name = new DirectoryInfo(f).FullName;               //完整目录
-                            subNode.Tag = subNode.Name;
+                            subNode.Tag = NodeType.File;
                             subNode.ImageIndex = IconIndexes.ClosedFolder;       //获取节点显示图片
                             subNode.SelectedImageIndex = IconIndexes.OpenFolder; //选择节点显示图片
                             tNode.Nodes.Add(subNode);
@@ -155,7 +170,6 @@ namespace WinForm
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            var modelFileNames=new List<string>();
             var generateSettings=new List<GenerateSettings>();
             foreach (var control in pnlTempSettings.Controls)
             {
@@ -175,7 +189,34 @@ namespace WinForm
                     generateSettings.Add(settings);
                 }
             }
+            var modelFileNames = new List<string>();
 
+            foreach (TreeNode node  in tvDir.Nodes)
+            {
+                GetCheckedFiles(node,modelFileNames);
+            }
+        }
+
+        private void GetCheckedFiles(TreeNode node, List<string> checkedFileNames)
+        {
+            if (node.Checked && node.Tag!=null)
+            {
+                var type = (NodeType)node.Tag;
+                //是文件节点，把文件添加到集合，并退出当次循环
+                if (type == NodeType.File)
+                {
+                    checkedFileNames.Add(node.Name);
+                    return;
+                }
+            }
+
+            if (node.GetNodeCount(false) > 0)
+            {
+                foreach (TreeNode child in node.Nodes)
+                {
+                    GetCheckedFiles(child,checkedFileNames);
+                }
+            }
         }
 
         private void frmGenerate_Activated(object sender, EventArgs e)
