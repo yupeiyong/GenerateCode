@@ -31,7 +31,7 @@ namespace Winform
             {
                 TemplateFileName = txtTempName.Text,
                 DestPath = txtDestPath.Text,
-                Extention = txtExtention.Text,
+                DestFileName = txtDestFileName.Text,
                 OverWrite = chkOverwrite.Checked,
                 IsGenerate = chkGenerate.Checked
             };

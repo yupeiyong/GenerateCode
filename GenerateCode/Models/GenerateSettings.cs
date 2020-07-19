@@ -21,7 +21,7 @@ namespace Winform.Models
         /// <summary>
         /// 文件扩展名
         /// </summary>
-        public string Extention { get; set; }
+        public string DestFileName { get; set; }
 
         /// <summary>
         /// 如果存在文件，是否覆盖

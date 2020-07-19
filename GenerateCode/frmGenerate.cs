@@ -177,10 +177,13 @@ namespace WinForm
                 if (tsControl != null)
                 {
                     var settings = tsControl.GetSettings();
+                    if (!settings.IsGenerate)
+                        continue;
+
                     if(string.IsNullOrWhiteSpace(settings.TemplateFileName))
                         throw new Exception("模板文件名为空！");
 
-                    if(string.IsNullOrWhiteSpace(settings.Extention))
+                    if(string.IsNullOrWhiteSpace(settings.DestFileName))
                         throw new Exception("文件扩展名不能为空！");
 
                     if(string.IsNullOrWhiteSpace(settings.DestPath))
@@ -189,11 +192,72 @@ namespace WinForm
                     generateSettings.Add(settings);
                 }
             }
+            if(generateSettings.Count==0)
+                throw new Exception("你选择了0个生成模板!");
+
             var modelFileNames = new List<string>();
 
             foreach (TreeNode node  in tvDir.Nodes)
             {
                 GetCheckedFiles(node,modelFileNames);
+            }
+            if(modelFileNames.Count==0)
+                throw new Exception("你选择了0个模型文件！");
+
+            foreach (var modelFileName in modelFileNames)
+            {
+                GenerateCode(modelFileName,generateSettings);
+            }
+        }
+
+
+        private void GenerateCode(string modelFileName, List<GenerateSettings> settings)
+        {
+            var root = AppDomain.CurrentDomain.BaseDirectory + @"\Temps";
+            var rootDir = new DirectoryInfo(root);
+            if (!rootDir.Exists)
+                rootDir.Create();
+
+            var fInfo =new FileInfo(modelFileName);
+            if(!fInfo.Exists)
+                throw new Exception($"{modelFileName}文件不存在！");
+
+            var shortName = fInfo.Name;
+            var className = shortName.Replace(fInfo.Extension, "");
+            var lines = File.ReadLines(modelFileName);
+
+            var content = File.ReadAllText(modelFileName);
+            foreach (var setting in settings)
+            {
+                var tempContent = File.ReadAllText(Path.Combine(root,setting.TemplateFileName));
+                var path = setting.DestPath;
+                path = path.Replace("{ModelClassName}", className);
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                string destFileName=string.Empty;
+                if (setting.DestFileName.Contains("{ModelClassName}"))
+                {
+                    destFileName=setting.DestFileName.Replace("{ModelClassName}", className);
+                }
+                //首字母小写
+                if (setting.DestFileName.Contains("{modelClassName}"))
+                {
+                    var name = className.Substring(0,1).ToLower()+className.Substring(1);
+                    destFileName=setting.DestFileName.Replace("{modelClassName}", name);
+                }
+                
+                destFileName = Path.Combine(path, destFileName);
+
+                //文件存在，并且不允许覆盖，不执行生成
+                if (File.Exists(destFileName) && !setting.OverWrite)
+                    continue;
+
+                tempContent = tempContent.Replace("{ModelClassName}", className);
+
+                File.WriteAllText(destFileName, tempContent);
             }
         }
 

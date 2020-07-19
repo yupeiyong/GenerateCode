@@ -1,5 +1,16 @@
 ﻿
 $(function () {
+    ////默认值
+    var addDefaultValue = "-- 无 --";
+
+    //转换为select2
+    $("form.form-edit .no-search-select2").each(function () {
+        //当前对象
+        var $this = $(this);
+        //远程筛选
+        $this.select2();
+    });
+
 
     $('.buttons #btnSave').on('click', function () {
         var $form = $("form.form-horizontal");
@@ -19,8 +30,9 @@ $(function () {
 
         var url = $this.data("url");
         //保存
-        var btnOriginalText = $this.text();
         var data = $form.serializeArray();
+        var btnOriginalText = $this.text();
+
         $.ajax({
             url: url,
             type: "json",
@@ -53,28 +65,32 @@ $(function () {
                 $this.text(btnOriginalText);
             }
         });
-
-
         //不执行提交动作
         return false;
     });
 
-    //关闭对话框
-    $('.buttons #btnClose').on('click',
-        function () {
-            //当前对象
-            var $this = $(this);
-
-            $this.closest('.bootstrap-dialog').modal('hide');
-        });
 
     //输入框焦点事件
     $("input").focus(function () {
         $(this).select();
     });
 
+
     $('.first').focus().select();
 
+    // 时间初始化
+    $(".datepicker-box").datepicker({
+        startView: 'years',  //起始选择范围
+        maxViewMode: 'years', //最大选择范围
+        minViewMode: 'days', //最小选择范围
+        todayHighlight: true,// 当前时间高亮显示
+        autoclose: 'true',// 选择时间后弹框自动消失
+        format: 'yyyy-mm-dd',// 时间格式
+        language: 'zh-CN',// 汉化
+        todayBtn: "linked",//显示今天 按钮
+        clearBtn: true,// 清除按钮，和今天 按钮只能显示一个   
+
+    });
 });
 
 //按钮鼠标事件
@@ -93,53 +109,3 @@ $(".form-edit button").keydown(function (e) {
     }
 });
 
-function array_difference(a, b) { // 差集 a - b
-    //clone = a
-    var clone = a.slice(0);
-    for (var i = 0; i < b.length; i++) {
-        var temp = b[i];
-        for (var j = 0; j < clone.length; j++) {
-            if (temp === clone[j]) {
-                //remove clone[j]
-                clone.splice(j, 1);
-            }
-        }
-    }
-    return array_remove_repeat(clone);
-}
-
-function array_remove_repeat(a) { // 去重
-    var r = [];
-    for (var i = 0; i < a.length; i++) {
-        var flag = true;
-        var temp = a[i];
-        for (var j = 0; j < r.length; j++) {
-            if (temp === r[j]) {
-                flag = false;
-                break;
-            }
-        }
-        if (flag) {
-            r.push(temp);
-        }
-    }
-    return r;
-}
-
-function array_intersection(a, b) { // 交集
-    var result = [];
-    for (var i = 0; i < b.length; i++) {
-        var temp = b[i];
-        for (var j = 0; j < a.length; j++) {
-            if (temp === a[j]) {
-                result.push(temp);
-                break;
-            }
-        }
-    }
-    return array_remove_repeat(result);
-}
-
-function array_union(a, b) { // 并集
-    return array_remove_repeat(a.concat(b));
-}

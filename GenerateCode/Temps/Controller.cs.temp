@@ -11,26 +11,71 @@ using YPY.Asp.Net.DataTransferObjects;
 
 namespace WebMvc.Areas.SystemManage.Controllers
 {
-    public class AreaDataController : BaseAdminController
+    public class {ModelClassName}Controller : BaseAdminController
     {
-        public AreaDataService AreaDataService { get; set; }
-        /// <summary>
-        /// 取指定产品的型号
-        /// </summary>
-        /// <param name="dto"></param>
-        /// <returns></returns>
-        public JsonResult GetChildrenModels(AreaDataSearchDto dto)
-        {
-            var area = AreaDataService.GetChildren(dto);
+        private readonly string _modelDescription;
 
-            var viewModels = area.Select(m => new AreaDataSelectViewModel { id = m.Code, text = m.Name, ParentCode = m.ParentCode}).ToList();
-            var result = new ResultInfo<AreaDataSelectViewModel>
+        public {ModelClassName}Controller()
+        {
+            _modelDescription = typeof({ModelClassName}).GetDescription();
+        }
+
+        public {ModelClassName}Service {ModelClassName}Service { get; set; }
+
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ContentResult GetData({ModelClassName}SearchDto dto)
+        {
+            var rows = {ModelClassName}Service.Search(dto);
+            var result = new ResultInfo<{ModelClassName}>
             {
                 IsSuccess = true,
-                Data = viewModels,
-                Total = dto.PageCount
+                Total = dto.TotalCount,
+                Data = rows
             };
-            return Json(result, JsonRequestBehavior.AllowGet);
+            var str = JsonConvert.SerializeObject(result,
+                new JsonSerializerSettings { DateFormatString = "yyyy-MM-dd HH:mm" });
+            return Content(str);
+        }
+
+
+        public ActionResult Edit(long id = -1)
+        {
+            var viewModel = new {ModelClassName}EditViewModel();
+            var data = id > 0 ? ({ModelClassName}Service.GetDataById(id) ?? new {ModelClassName}()) : new {ModelClassName}();
+
+            viewModel.{ModelClassName} = data;
+            return View(viewModel);
+        }
+
+
+        public ActionResult Add()
+        {
+            return RedirectToAction("Edit");
+        }
+
+        [HttpPost]
+        public JsonResult Save({ModelClassName}EditDto dto)
+        {
+            dto.OperatorId = CurrentOnlineUser.UserId;
+            {ModelClassName}Service.Save(dto);
+
+            return Json(new BaseResponseDto { Message = "保存成功！", Success = true, Title = _modelDescription });
+        }
+
+
+        [HttpPost]
+        public JsonResult Remove(params long[] id)
+        {
+            if (!CurrentOnlineUser.Role.HasValue || (CurrentOnlineUser.Role.Value != RoleEnum.Admin && CurrentOnlineUser.Role.Value != RoleEnum.WarehouseKeeper))
+                return Json(new BaseResponseDto { Message = "您没有操作权限！", Success = true, Title = _modelDescription });
+
+            {ModelClassName}Service.Remove(id);
+            return Json(new BaseResponseDto { Message = "删除成功！", Success = true, Title = _modelDescription });
         }
     }
 }

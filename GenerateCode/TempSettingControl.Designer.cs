@@ -35,7 +35,7 @@
             this.chkOverwrite = new System.Windows.Forms.CheckBox();
             this.btnOpenFolder = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.txtExtention = new System.Windows.Forms.TextBox();
+            this.txtDestFileName = new System.Windows.Forms.TextBox();
             this.chkGenerate = new System.Windows.Forms.CheckBox();
             this.btnViewTemp = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -63,7 +63,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDestPath.Location = new System.Drawing.Point(78, 28);
             this.txtDestPath.Name = "txtDestPath";
-            this.txtDestPath.Size = new System.Drawing.Size(562, 21);
+            this.txtDestPath.Size = new System.Drawing.Size(582, 21);
             this.txtDestPath.TabIndex = 0;
             // 
             // label3
@@ -79,7 +79,7 @@
             // 
             this.chkOverwrite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkOverwrite.AutoSize = true;
-            this.chkOverwrite.Location = new System.Drawing.Point(642, 6);
+            this.chkOverwrite.Location = new System.Drawing.Point(662, 6);
             this.chkOverwrite.Name = "chkOverwrite";
             this.chkOverwrite.Size = new System.Drawing.Size(72, 16);
             this.chkOverwrite.TabIndex = 2;
@@ -88,7 +88,8 @@
             // 
             // btnOpenFolder
             // 
-            this.btnOpenFolder.Location = new System.Drawing.Point(656, 27);
+            this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenFolder.Location = new System.Drawing.Point(676, 27);
             this.btnOpenFolder.Name = "btnOpenFolder";
             this.btnOpenFolder.Size = new System.Drawing.Size(64, 23);
             this.btnOpenFolder.TabIndex = 3;
@@ -99,18 +100,18 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(484, 8);
+            this.label4.Location = new System.Drawing.Point(471, 8);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(53, 12);
+            this.label4.Size = new System.Drawing.Size(77, 12);
             this.label4.TabIndex = 4;
-            this.label4.Text = "扩展名：";
+            this.label4.Text = "生成文件名：";
             // 
-            // txtExtention
+            // txtDestFileName
             // 
-            this.txtExtention.Location = new System.Drawing.Point(539, 4);
-            this.txtExtention.Name = "txtExtention";
-            this.txtExtention.Size = new System.Drawing.Size(100, 21);
-            this.txtExtention.TabIndex = 5;
+            this.txtDestFileName.Location = new System.Drawing.Point(544, 4);
+            this.txtDestFileName.Name = "txtDestFileName";
+            this.txtDestFileName.Size = new System.Drawing.Size(116, 21);
+            this.txtDestFileName.TabIndex = 5;
             // 
             // chkGenerate
             // 
@@ -139,7 +140,7 @@
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.btnViewTemp);
             this.Controls.Add(this.chkGenerate);
-            this.Controls.Add(this.txtExtention);
+            this.Controls.Add(this.txtDestFileName);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.chkOverwrite);
@@ -148,7 +149,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtTempName);
             this.Name = "TempSettingControl";
-            this.Size = new System.Drawing.Size(721, 54);
+            this.Size = new System.Drawing.Size(741, 54);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,7 +164,7 @@
         private System.Windows.Forms.CheckBox chkOverwrite;
         private System.Windows.Forms.Button btnOpenFolder;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtExtention;
+        private System.Windows.Forms.TextBox txtDestFileName;
         private System.Windows.Forms.CheckBox chkGenerate;
         private System.Windows.Forms.Button btnViewTemp;
     }
