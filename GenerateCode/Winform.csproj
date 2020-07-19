@@ -57,12 +57,6 @@
     <Compile Include="frmTemp.Designer.cs">
       <DependentUpon>frmTemp.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmTempEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmTempEdit.Designer.cs">
-      <DependentUpon>frmTempEdit.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmGenerate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -134,9 +128,6 @@
     </Compile>
     <EmbeddedResource Include="frmTemp.resx">
       <DependentUpon>frmTemp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmTempEdit.resx">
-      <DependentUpon>frmTempEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmGenerate.resx">
       <DependentUpon>frmGenerate.cs</DependentUpon>
