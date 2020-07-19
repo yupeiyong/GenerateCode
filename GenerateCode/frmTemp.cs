@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using GenerateCode.Models;
 using Winform.Helpers;
@@ -118,7 +119,28 @@ namespace Winform
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
+            var fileName = InputBox.GetText();
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new Exception("模板文件名不能为空！");
 
+            var root = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Temps");
+            var rootDir = new DirectoryInfo(root);
+            if (!rootDir.Exists)
+                rootDir.Create();
+
+            var files = rootDir.GetFiles("*.temp");
+            if (files.Any(f => f.Name == fileName))
+                throw new Exception("已经有相同名称的模板！");
+
+            var fileFullName = Path.Combine(root, fileName);
+            fileFullName = fileFullName + ".temp";
+            using (var fs = new FileStream(fileFullName, FileMode.CreateNew, FileAccess.Write, FileShare.ReadWrite))
+            {
+
+            }
+
+            OpenFile.Open(fileFullName);
+            BindDataGrid();
         }
     }
 }
