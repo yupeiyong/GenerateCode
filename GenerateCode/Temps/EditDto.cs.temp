@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using Common.Log;
+using Models.Enum;
+using Newtonsoft.Json;
+
+namespace DataTransferObjects.Products
+{
+    public class {ModelClassName}EditDto
+    {
+        public long UpdateId { get; set; }
+
+
+    }
+}

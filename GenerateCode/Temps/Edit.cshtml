@@ -1,0 +1,50 @@
+﻿@using Models
+@using Common
+@using DataTransferObjects
+@using DataTransferObjects.Products
+@using Models.Products
+@using ViewModels
+@model ProductEditViewModel
+@{
+    Layout = null;
+    var data = Model.Product;
+    var isAdd = data.Id <= 0;
+}
+<link href="~/Lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<link href="~/Areas/SystemManage/Content/Product-edit.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <form class="form-horizontal form-edit" role="form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                名称：
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control input-sm" name="@nameof(ProductEditDto.Name)" value="@data.Name" required="true"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="hidden" id="product_edit_hidden">
+                        <input name="@nameof({ModelClassName}EditDto.UpdateId)" type="hidden" value="@data.Id" />
+                    </div>
+                    <div class="col-sm-12 text-center buttons">
+                        <button type="button" class="btn btn-success u-btn" id="btnSave" data-url="@Url.Action("Save")">
+                            <i class="fa fa-save" aria-hidden="true"></i>
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/Lib/select2/4.0.3/js/select2.min.js"></script>
+<script src="~/Lib/select2/4.0.3/js/select2.full.min.js"></script>
+<script src="~/Areas/SystemManage/Scripts/{modelClassName}-edit.js"></script>

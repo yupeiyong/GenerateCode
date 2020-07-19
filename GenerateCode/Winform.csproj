@@ -89,6 +89,9 @@
     <Compile Include="TempSettingControl.Designer.cs">
       <DependentUpon>TempSettingControl.cs</DependentUpon>
     </Compile>
+    <None Include="Temps\EditDto.cs.temp" />
+    <None Include="Temps\SearchDto.cs.temp" />
+    <None Include="Temps\Service.cs.temp" />
     <Compile Include="UserControls\Button.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -169,9 +172,11 @@
     <None Include="Temps\Controller.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Temps\Edit.cshtml" />
     <None Include="Temps\edit.js.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Temps\Index.cshtml" />
     <None Include="Temps\index.js.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -392,6 +397,8 @@
   <ItemGroup>
     <None Include="Resources\TitleManageEmployeeModify.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="模板设置说明.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

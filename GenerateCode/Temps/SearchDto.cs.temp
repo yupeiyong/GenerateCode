@@ -1,0 +1,9 @@
+﻿using System;
+using YPY.Asp.Net.DataTransferObjects;
+
+namespace DataTransferObjects.Products
+{
+    public class {ModelClassName}SearchDto:BaseSearchDto
+    {
+    }
+}
