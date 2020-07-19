@@ -25,11 +25,11 @@ namespace WinForm
             /// <summary>
             /// 文件夹
             /// </summary>
-            Directory=0,
+            Directory = 0,
             /// <summary>
             /// 文件
             /// </summary>
-            File=1
+            File = 1
         }
 
         public frmGenerate()
@@ -172,7 +172,7 @@ namespace WinForm
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            var generateSettings=new List<GenerateSettings>();
+            var generateSettings = new List<GenerateSettings>();
             foreach (var control in pnlTempSettings.Controls)
             {
                 var tsControl = control as TempSettingControl;
@@ -182,33 +182,33 @@ namespace WinForm
                     if (!settings.IsGenerate)
                         continue;
 
-                    if(string.IsNullOrWhiteSpace(settings.TemplateFileName))
+                    if (string.IsNullOrWhiteSpace(settings.TemplateFileName))
                         throw new Exception("模板文件名为空！");
 
-                    if(string.IsNullOrWhiteSpace(settings.DestFileName))
+                    if (string.IsNullOrWhiteSpace(settings.DestFileName))
                         throw new Exception("文件扩展名不能为空！");
 
-                    if(string.IsNullOrWhiteSpace(settings.DestPath))
+                    if (string.IsNullOrWhiteSpace(settings.DestPath))
                         throw new Exception("目标文件夹不能为空！");
 
                     generateSettings.Add(settings);
                 }
             }
-            if(generateSettings.Count==0)
+            if (generateSettings.Count == 0)
                 throw new Exception("你选择了0个生成模板!");
 
             var modelFileNames = new List<string>();
 
-            foreach (TreeNode node  in tvDir.Nodes)
+            foreach (TreeNode node in tvDir.Nodes)
             {
-                GetCheckedFiles(node,modelFileNames);
+                GetCheckedFiles(node, modelFileNames);
             }
-            if(modelFileNames.Count==0)
+            if (modelFileNames.Count == 0)
                 throw new Exception("你选择了0个模型文件！");
 
             foreach (var modelFileName in modelFileNames)
             {
-                GenerateCode(modelFileName,generateSettings);
+                GenerateCode(modelFileName, generateSettings);
             }
         }
 
@@ -220,8 +220,8 @@ namespace WinForm
             if (!rootDir.Exists)
                 rootDir.Create();
 
-            var fInfo =new FileInfo(modelFileName);
-            if(!fInfo.Exists)
+            var fInfo = new FileInfo(modelFileName);
+            if (!fInfo.Exists)
                 throw new Exception($"{modelFileName}文件不存在！");
 
             var shortName = fInfo.Name;
@@ -232,24 +232,24 @@ namespace WinForm
 
             var content = File.ReadAllText(modelFileName);
             var classDescription = className;
-            var match= Regex.Match(content, @"\[Description\("+ "\"(.*)\"" + @"\)\]\s*\r\n\s*public\s*class");
+            var match = Regex.Match(content, @"\[Description\(" + "\"(.*)\"" + @"\)\]\s*\r\n\s*public\s*class");
             if (match.Success)
             {
-                classDescription= match.Groups[1].Value;
+                classDescription = match.Groups[1].Value;
             }
 
             //字段正则匹配
             var fieldParterrn = @"(/// <summary>\s*\r\n\s*///\s*(.*)\s*/// </summary>\s*.)?public\s*([A-Za-z0-9]*\??)\s*([A-Za-z0-9]*)\s*{\s*get;.*";
             var fieldMatchs = Regex.Matches(content, fieldParterrn);
-            var fieldParameters=new List<ModelFieldParameters>();
+            var fieldParameters = new List<ModelFieldParameters>();
             foreach (Match m in fieldMatchs)
             {
                 if (m.Success)
                 {
                     var parameter = new ModelFieldParameters
                     {
-                        Annotation =m.Groups[2].Value.Replace("\r","").Replace("\n", ""),
-                        FieldType =m.Groups[3].Value,
+                        Annotation = m.Groups[2].Value.Replace("\r", "").Replace("\n", ""),
+                        FieldType = m.Groups[3].Value,
                         Name = m.Groups[4].Value
                     };
                     fieldParameters.Add(parameter);
@@ -257,7 +257,7 @@ namespace WinForm
             }
             foreach (var setting in settings)
             {
-                var tempContent = File.ReadAllText(Path.Combine(root,setting.TemplateFileName));
+                var tempContent = File.ReadAllText(Path.Combine(root, setting.TemplateFileName));
                 var path = setting.DestPath;
                 path = path.Replace("{ModelClassName}", className);
                 if (!Directory.Exists(path))
@@ -266,44 +266,45 @@ namespace WinForm
                 }
 
                 string destFileName = destFileName = setting.DestFileName.Replace("{ModelClassName}", className).Replace("{modelClassName}", firstLowerClassName);
-                
+
                 destFileName = Path.Combine(path, destFileName);
 
                 //文件存在，并且不允许覆盖，不执行生成
                 if (File.Exists(destFileName) && !setting.OverWrite)
                     continue;
 
-                tempContent = tempContent.Replace("{ModelClassName}", className).Replace("{modelClassName}", firstLowerClassName);
+                tempContent = tempContent.Replace("{ModelClassName}", className).Replace("{modelClassName}", firstLowerClassName).Replace("{{ModelDescription}}", classDescription);
 
                 var fieldStartIndex = tempContent.IndexOf("#######{{field_write_begin}}");
                 if (fieldStartIndex >= 0)
                 {
                     var fieldEndIndex = tempContent.IndexOf("#######{{field_write_end}}");
-                    if(fieldEndIndex<=0)
+                    if (fieldEndIndex <= 0)
                         throw new Exception("字段写入没有结束标志！");
 
-                    var fieldTempContent = tempContent.Substring(fieldStartIndex,
-                        fieldEndIndex + "#######{{field_write_end}}".Length);
+                    var nextIndex = fieldEndIndex + "#######{{field_write_end}}".Length;
+                    var fieldTempContent = tempContent.Substring(fieldStartIndex, nextIndex - fieldStartIndex);
 
-
-                    var sb=new StringBuilder();
+                    var newFieldTempContent = fieldTempContent.Replace("#######{{field_write_begin}}", "").Replace("#######{{field_write_end}}", "");
+                    var sb = new StringBuilder();
                     foreach (var fParameter in fieldParameters)
                     {
-                        sb.Append(GetFieldContent(fieldTempContent, fParameter,className));
+                        sb.Append(GetFieldContent(newFieldTempContent, fParameter, className));
                     }
 
-                    tempContent.Replace(fieldTempContent, sb.ToString());
+                    tempContent = tempContent.Replace(fieldTempContent, sb.ToString());
                 }
                 File.WriteAllText(destFileName, tempContent);
+                textBox1.Text = textBox1.Text + "\r\n" + $"{destFileName}生成成功！";
             }
         }
 
         private string GetFieldContent(string temp, ModelFieldParameters parameter, string className)
         {
             var str = temp.Replace("{{field_Annotation}}", parameter.Annotation);
-            str=str.Replace("{{field_Name}}", parameter.Name);
+            str = str.Replace("{{field_Name}}", parameter.Name);
             str = str.Replace("{ModelClassName}", className);
-            if (str.Contains("{{html_field_Name}}"))
+            if (str.Contains("{{html_field_type}}"))
             {
                 switch (parameter.FieldType)
                 {
@@ -317,24 +318,29 @@ namespace WinForm
                     case "short?":
                     case "double?":
                     case "float?":
-                        str = str.Replace("{{html_field_Name}}", "number");
+                        str = str.Replace("{{html_field_type}}", "number");
                         break;
                     case "DateTime":
                     case "DateTime?":
-                        str = str.Replace("{{html_field_Name}}", "datetime");
+                        str = str.Replace("{{html_field_type}}", "datetime");
                         break;
                     default:
-                        str = str.Replace("{{html_field_Name}}", "text");
+                        str = str.Replace("{{html_field_type}}", "text");
                         break;
                 }
             }
-            
-            return string.Empty;
+
+            if (str.Contains("{{field_type}}"))
+            {
+                str = str.Replace("{{field_type}}", parameter.FieldType);
+            }
+
+            return str;
         }
 
         private void GetCheckedFiles(TreeNode node, List<string> checkedFileNames)
         {
-            if (node.Checked && node.Tag!=null)
+            if (node.Checked && node.Tag != null)
             {
                 var type = (NodeType)node.Tag;
                 //是文件节点，把文件添加到集合，并退出当次循环
@@ -349,7 +355,7 @@ namespace WinForm
             {
                 foreach (TreeNode child in node.Nodes)
                 {
-                    GetCheckedFiles(child,checkedFileNames);
+                    GetCheckedFiles(child, checkedFileNames);
                 }
             }
         }

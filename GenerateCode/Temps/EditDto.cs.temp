@@ -9,5 +9,12 @@ namespace DataTransferObjects.Products
     public class {ModelClassName}EditDto
     {
         public long UpdateId { get; set; }
+
+#######{{field_write_begin}}
+    /// <summary>
+    /// {{field_Annotation}}
+    /// </summary>
+    public {{field_type}} {{field_Name}} { get; set; }
+#######{{field_write_end}}
     }
 }

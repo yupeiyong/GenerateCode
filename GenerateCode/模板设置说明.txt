@@ -6,7 +6,8 @@
 6、字段的注释，用于描述：{{field_Annotation}}
 7、字段的名称，用于指示字段名称：{{field_Name}}
 8、html页面的字段类型，{{html_field_type}}
-9、示例
+9、字段类型，{{field_type}}
+10、示例
 
 #######{{field_write_begin}}
                     <div class="col-md-6">

@@ -73,9 +73,9 @@ namespace Service
 
         }
 
-        public void Add({ModelClassName}EditDto dto)
+        public long Add({ModelClassName}EditDto dto)
         {
-            ValidateUpdateDto(dto);
+            ValidateEditDto(dto);
 
             var data = dto.MapTo<{ModelClassName}>();
             data.CreatorTime = DateTime.Now;
@@ -86,6 +86,7 @@ namespace Service
             {
                 dao.Set<{ModelClassName}>().Add(data);
                 dao.SaveChanges();
+                return data.Id;
             }
         }
 

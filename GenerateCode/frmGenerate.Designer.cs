@@ -47,7 +47,7 @@
             this.groupBox1.Controls.Add(this.tvDir);
             this.groupBox1.Location = new System.Drawing.Point(13, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(324, 554);
+            this.groupBox1.Size = new System.Drawing.Size(324, 600);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "选择数据模型文件";
@@ -57,7 +57,7 @@
             this.tvDir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvDir.Location = new System.Drawing.Point(3, 17);
             this.tvDir.Name = "tvDir";
-            this.tvDir.Size = new System.Drawing.Size(318, 534);
+            this.tvDir.Size = new System.Drawing.Size(318, 580);
             this.tvDir.TabIndex = 0;
             this.tvDir.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tvDir_AfterCheck);
             this.tvDir.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvDir_BeforeExpand);
@@ -73,9 +73,9 @@
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.btnGenerate);
             this.groupBox2.Controls.Add(this.pnlTempSettings);
-            this.groupBox2.Location = new System.Drawing.Point(355, 13);
+            this.groupBox2.Location = new System.Drawing.Point(343, 13);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(792, 554);
+            this.groupBox2.Size = new System.Drawing.Size(862, 600);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生成代码";
@@ -84,7 +84,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 406);
+            this.label2.Location = new System.Drawing.Point(8, 452);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 4;
@@ -94,10 +94,11 @@
             // 
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(10, 421);
+            this.textBox1.Location = new System.Drawing.Point(10, 467);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(776, 118);
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
+            this.textBox1.Size = new System.Drawing.Size(846, 118);
             this.textBox1.TabIndex = 3;
             // 
             // btnGenerate
@@ -118,7 +119,7 @@
             this.pnlTempSettings.AutoScroll = true;
             this.pnlTempSettings.Location = new System.Drawing.Point(10, 60);
             this.pnlTempSettings.Name = "pnlTempSettings";
-            this.pnlTempSettings.Size = new System.Drawing.Size(776, 343);
+            this.pnlTempSettings.Size = new System.Drawing.Size(846, 389);
             this.pnlTempSettings.TabIndex = 0;
             // 
             // textBox2
@@ -134,7 +135,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1159, 579);
+            this.ClientSize = new System.Drawing.Size(1217, 625);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmGenerate";

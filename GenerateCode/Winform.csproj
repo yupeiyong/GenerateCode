@@ -99,7 +99,6 @@
     <None Include="Temps\Service.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Compile Include="Temps\Class1.cs" />
     <Compile Include="UserControls\Button.cs">
       <SubType>UserControl</SubType>
     </Compile>

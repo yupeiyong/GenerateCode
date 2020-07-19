@@ -63,7 +63,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDestPath.Location = new System.Drawing.Point(78, 28);
             this.txtDestPath.Name = "txtDestPath";
-            this.txtDestPath.Size = new System.Drawing.Size(582, 21);
+            this.txtDestPath.Size = new System.Drawing.Size(708, 21);
             this.txtDestPath.TabIndex = 0;
             // 
             // label3
@@ -79,7 +79,7 @@
             // 
             this.chkOverwrite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkOverwrite.AutoSize = true;
-            this.chkOverwrite.Location = new System.Drawing.Point(662, 6);
+            this.chkOverwrite.Location = new System.Drawing.Point(792, 6);
             this.chkOverwrite.Name = "chkOverwrite";
             this.chkOverwrite.Size = new System.Drawing.Size(72, 16);
             this.chkOverwrite.TabIndex = 2;
@@ -89,7 +89,7 @@
             // btnOpenFolder
             // 
             this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenFolder.Location = new System.Drawing.Point(676, 27);
+            this.btnOpenFolder.Location = new System.Drawing.Point(806, 27);
             this.btnOpenFolder.Name = "btnOpenFolder";
             this.btnOpenFolder.Size = new System.Drawing.Size(64, 23);
             this.btnOpenFolder.TabIndex = 3;
@@ -108,9 +108,11 @@
             // 
             // txtDestFileName
             // 
+            this.txtDestFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDestFileName.Location = new System.Drawing.Point(544, 4);
             this.txtDestFileName.Name = "txtDestFileName";
-            this.txtDestFileName.Size = new System.Drawing.Size(116, 21);
+            this.txtDestFileName.Size = new System.Drawing.Size(242, 21);
             this.txtDestFileName.TabIndex = 5;
             // 
             // chkGenerate
@@ -149,7 +151,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtTempName);
             this.Name = "TempSettingControl";
-            this.Size = new System.Drawing.Size(741, 54);
+            this.Size = new System.Drawing.Size(871, 54);
             this.ResumeLayout(false);
             this.PerformLayout();
 
