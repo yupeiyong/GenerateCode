@@ -47,7 +47,7 @@
     });
 
 
-    window.operateFormatterUser = function (value, row, index) {
+    window.operateFormatter = function (value, row, index) {
         return [
             "<a  title='编辑' href=\"#\" class=\"u-edit btn btncolor\" data-u-url=\"/SystemManage/{ModelClassName}/Edit/" + value + "\">",
             "<i class=\"fa fa-lg fa-edit\" aria-hidden=\"true\"></i>",
