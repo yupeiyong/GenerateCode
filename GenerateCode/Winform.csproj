@@ -89,9 +89,15 @@
     <Compile Include="TempSettingControl.Designer.cs">
       <DependentUpon>TempSettingControl.cs</DependentUpon>
     </Compile>
-    <None Include="Temps\EditDto.cs.temp" />
-    <None Include="Temps\SearchDto.cs.temp" />
-    <None Include="Temps\Service.cs.temp" />
+    <None Include="Temps\EditDto.cs.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Temps\SearchDto.cs.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Temps\Service.cs.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Compile Include="UserControls\Button.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -172,11 +178,15 @@
     <None Include="Temps\Controller.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Temps\Edit.cshtml" />
+    <None Include="Temps\Edit.cshtml.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Temps\edit.js.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Temps\Index.cshtml" />
+    <None Include="Temps\Index.cshtml.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Temps\index.js.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

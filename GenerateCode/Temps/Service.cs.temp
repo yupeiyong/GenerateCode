@@ -12,14 +12,15 @@ using Service.Auth;
 using Service.Ioc;
 using YPY.Library;
 
-namespace Service.{ModelClassName}s
+namespace Service
 {
+    
+    /// <summary>
+    /// {{ModelDescription}}业务操作
+    /// </summary>
     public class {ModelClassName}Service
     {
         private readonly string _modelDescription = typeof({ModelClassName}).GetDescription();
-
-        private static object _lock = new object();
-        public int AllowUpdateDays { get; set; } = 14;
 
         public List<{ModelClassName}> Search({ModelClassName}SearchDto dto)
         {
@@ -27,13 +28,8 @@ namespace Service.{ModelClassName}s
             using (var dao = DBContextFactory.GetDbContext(databaseName))
             {
                 var dataSource = dao.Set<{ModelClassName}>().AsNoTracking().AsQueryable();
-                ////只查询已保存数据
-                //dataSource = dataSource.Where(p => p.EditState == EditStateEnum.Saved);
 
                 dataSource = dataSource.WhereDateTime(nameof(Order.CreatorTime), dto.StartCreatorTime, dto.EndCreatorTime);
-
-                if (!string.IsNullOrWhiteSpace(dto.Keywords))
-                    dataSource = dataSource.Where(p => p.Name != null && p.Name.Contains(dto.Keywords));
 
                 if (dto.sort != null)
                 {
@@ -74,59 +70,22 @@ namespace Service.{ModelClassName}s
 
         private void ValidateEditDto({ModelClassName}EditDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new Exception("产品名称不能为空！");
-
-            if (dto.Name.Length > 20)
-                throw new Exception("产品名称长度不能超过20个字符！");
 
         }
 
-        /// <summary>
-        /// 新增，编辑状态：临时改为保存
-        /// </summary>
-        /// <param name="dto"></param>
-        /// <returns></returns>
-        internal long Add({ModelClassName}EditDto dto, DbContext dao = null)
+        public void Add({ModelClassName}EditDto dto)
         {
+            ValidateUpdateDto(dto);
+
+            var data = dto.MapTo<{ModelClassName}>();
+            data.CreatorTime = DateTime.Now;
+            data.LastModifyTime = DateTime.Now;
+
             var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
-
-            ValidateEditDto(dto);
-            var isNewDao = false;
-            if (dao == null)
+            using (var dao = DBContextFactory.GetDbContext(databaseName))
             {
-                isNewDao = true;
-                dao = DBContextFactory.GetDbContext(databaseName);
-            }
-
-            try
-            {
-                if (dao.Set<{ModelClassName}>().AsNoTracking().Any(p => p.Name == dto.Name))
-                    throw new Exception($"错误，产品名称{dto.Name}重复！");
-
-                if (!dao.Set<User>().AsNoTracking().Any(u => u.Id == dto.OperatorId))
-                    throw new Exception($"Id={dto.OperatorId}的用户不存在！");
-
-                var data = dto.MapTo<{ModelClassName}>();
-
-                data.CreatorTime = DateTime.Now;
-                data.LastModifyTime = DateTime.Now;
-                data.OperatorId = dto.OperatorId;
-
                 dao.Set<{ModelClassName}>().Add(data);
                 dao.SaveChanges();
-                return data.Id;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                if (isNewDao && dao != null)
-                {
-                    dao.Dispose();
-                }
             }
         }
 
@@ -136,9 +95,6 @@ namespace Service.{ModelClassName}s
             var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
             using (var dao = DBContextFactory.GetDbContext(databaseName))
             {
-                if (dao.Set<{ModelClassName}>().AsNoTracking().Any(p => p.Id != dto.UpdateId && p.Name == dto.Name))
-                    throw new Exception($"错误，产品名称{dto.Name}重复！");
-
                 var data = dao.Set<{ModelClassName}>().FirstOrDefault(tr => tr.Id == dto.UpdateId);
                 if (data == null)
                     throw new Exception($"错误，Id={dto.UpdateId}的{_modelDescription}记录不存在，修改失败！");

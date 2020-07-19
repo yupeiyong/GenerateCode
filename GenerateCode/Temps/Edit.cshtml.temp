@@ -4,10 +4,10 @@
 @using DataTransferObjects.Products
 @using Models.Products
 @using ViewModels
-@model ProductEditViewModel
+@model {ModelClassName}
 @{
     Layout = null;
-    var data = Model.Product;
+    var data = Model?? new {ModelClassName}();
     var isAdd = data.Id <= 0;
 }
 <link href="~/Lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />

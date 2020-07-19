@@ -11,6 +11,9 @@ using YPY.Asp.Net.DataTransferObjects;
 
 namespace WebMvc.Areas.SystemManage.Controllers
 {
+    /// <summary>
+    /// {{ModelDescription}}控制器
+    /// </summary>
     public class {ModelClassName}Controller : BaseAdminController
     {
         private readonly string _modelDescription;

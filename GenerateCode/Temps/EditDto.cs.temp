@@ -9,7 +9,5 @@ namespace DataTransferObjects.Products
     public class {ModelClassName}EditDto
     {
         public long UpdateId { get; set; }
-
-
     }
 }

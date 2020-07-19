@@ -68,7 +68,7 @@
         $("#btnAdd, .table .u-edit").off("click").on("click", function () {
             var $this = $(this);
 
-            var title = "新增-用户资料";
+            var title = "新增-{{ModelDescription}}";
             var isModify = $this.hasClass("u-edit");
             if (isModify) {
                 var $tr = $this.closest("tr");
@@ -76,7 +76,7 @@
                 if (!rowId || rowId.length <= 0) {
                     return false;
                 }
-                title = "修改用户资料  " + rowId;
+                title = "修改{{ModelDescription}}  " + rowId;
             }
 
             //获取链接路径

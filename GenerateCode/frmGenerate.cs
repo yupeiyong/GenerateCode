@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Winform;
@@ -224,9 +225,17 @@ namespace WinForm
 
             var shortName = fInfo.Name;
             var className = shortName.Replace(fInfo.Extension, "");
+            //类名首字母小写
+            var firstLowerClassName = className.Substring(0, 1).ToLower() + className.Substring(1);
             var lines = File.ReadLines(modelFileName);
 
             var content = File.ReadAllText(modelFileName);
+            var classDescription = className;
+            var match= Regex.Match(content, @"\[Description\("+ "\"(.*)\"" + @"\)\]\s*\r\n\s*public\s*class");
+            if (match.Success)
+            {
+                classDescription= match.Groups[1].Value;
+            }
             foreach (var setting in settings)
             {
                 var tempContent = File.ReadAllText(Path.Combine(root,setting.TemplateFileName));
@@ -237,17 +246,7 @@ namespace WinForm
                     Directory.CreateDirectory(path);
                 }
 
-                string destFileName=string.Empty;
-                if (setting.DestFileName.Contains("{ModelClassName}"))
-                {
-                    destFileName=setting.DestFileName.Replace("{ModelClassName}", className);
-                }
-                //首字母小写
-                if (setting.DestFileName.Contains("{modelClassName}"))
-                {
-                    var name = className.Substring(0,1).ToLower()+className.Substring(1);
-                    destFileName=setting.DestFileName.Replace("{modelClassName}", name);
-                }
+                string destFileName = destFileName = setting.DestFileName.Replace("{ModelClassName}", className).Replace("{modelClassName}", firstLowerClassName);
                 
                 destFileName = Path.Combine(path, destFileName);
 
@@ -255,7 +254,7 @@ namespace WinForm
                 if (File.Exists(destFileName) && !setting.OverWrite)
                     continue;
 
-                tempContent = tempContent.Replace("{ModelClassName}", className);
+                tempContent = tempContent.Replace("{ModelClassName}", className).Replace("{modelClassName}", firstLowerClassName);
 
                 File.WriteAllText(destFileName, tempContent);
             }
