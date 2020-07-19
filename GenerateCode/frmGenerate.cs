@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Winform;
 using Winform.Models;
+using Match = System.Text.RegularExpressions.Match;
 
 namespace WinForm
 {
@@ -236,6 +237,24 @@ namespace WinForm
             {
                 classDescription= match.Groups[1].Value;
             }
+
+            //字段正则匹配
+            var fieldParterrn = @"(/// <summary>\s*\r\n\s*///\s*(.*)\s*/// </summary>\s*.)?public\s*([A-Za-z0-9]*\??)\s*([A-Za-z0-9]*)\s*{\s*get;.*";
+            var fieldMatchs = Regex.Matches(content, fieldParterrn);
+            var fieldParameters=new List<ModelFieldParameters>();
+            foreach (Match m in fieldMatchs)
+            {
+                if (m.Success)
+                {
+                    var parameter = new ModelFieldParameters
+                    {
+                        Annotation =m.Groups[2].Value.Replace("\r","").Replace("\n", ""),
+                        FieldType =m.Groups[3].Value,
+                        Name = m.Groups[4].Value
+                    };
+                    fieldParameters.Add(parameter);
+                }
+            }
             foreach (var setting in settings)
             {
                 var tempContent = File.ReadAllText(Path.Combine(root,setting.TemplateFileName));
@@ -256,8 +275,61 @@ namespace WinForm
 
                 tempContent = tempContent.Replace("{ModelClassName}", className).Replace("{modelClassName}", firstLowerClassName);
 
+                var fieldStartIndex = tempContent.IndexOf("#######{{field_write_begin}}");
+                if (fieldStartIndex >= 0)
+                {
+                    var fieldEndIndex = tempContent.IndexOf("#######{{field_write_end}}");
+                    if(fieldEndIndex<=0)
+                        throw new Exception("字段写入没有结束标志！");
+
+                    var fieldTempContent = tempContent.Substring(fieldStartIndex,
+                        fieldEndIndex + "#######{{field_write_end}}".Length);
+
+
+                    var sb=new StringBuilder();
+                    foreach (var fParameter in fieldParameters)
+                    {
+                        sb.Append(GetFieldContent(fieldTempContent, fParameter,className));
+                    }
+
+                    tempContent.Replace(fieldTempContent, sb.ToString());
+                }
                 File.WriteAllText(destFileName, tempContent);
             }
+        }
+
+        private string GetFieldContent(string temp, ModelFieldParameters parameter, string className)
+        {
+            var str = temp.Replace("{{field_Annotation}}", parameter.Annotation);
+            str=str.Replace("{{field_Name}}", parameter.Name);
+            str = str.Replace("{ModelClassName}", className);
+            if (str.Contains("{{html_field_Name}}"))
+            {
+                switch (parameter.FieldType)
+                {
+                    case "long":
+                    case "int":
+                    case "short":
+                    case "double":
+                    case "float":
+                    case "long?":
+                    case "int?":
+                    case "short?":
+                    case "double?":
+                    case "float?":
+                        str = str.Replace("{{html_field_Name}}", "number");
+                        break;
+                    case "DateTime":
+                    case "DateTime?":
+                        str = str.Replace("{{html_field_Name}}", "datetime");
+                        break;
+                    default:
+                        str = str.Replace("{{html_field_Name}}", "text");
+                        break;
+                }
+            }
+            
+            return string.Empty;
         }
 
         private void GetCheckedFiles(TreeNode node, List<string> checkedFileNames)

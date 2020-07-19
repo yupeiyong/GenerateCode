@@ -80,6 +80,7 @@
       <DependentUpon>MDIParent1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\GenerateSettings.cs" />
+    <Compile Include="Models\ModelFieldParameters.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,6 +99,7 @@
     <None Include="Temps\Service.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="Temps\Class1.cs" />
     <Compile Include="UserControls\Button.cs">
       <SubType>UserControl</SubType>
     </Compile>

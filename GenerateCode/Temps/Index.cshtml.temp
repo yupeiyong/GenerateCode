@@ -89,11 +89,12 @@
                             data-align="center" data-halign="center" data-valign="middle">
                             Id
                         </th>
-                        <th data-sortable="true" data-field="@nameof(Product.Name)" data-width="300" data-align="left" data-halign="center"
-                            data-formatter="styleFormatter"
-                            data-valign="middle">
-                            名称
-                        </th>
+#######{{field_write_begin}}
+<th data-sortable="true" data-field="{{field_Name}}" data-width="300" data-align="left" data-halign="center"
+data-valign="middle">
+{{field_Annotation}}
+</th>
+#######{{field_write_end}}
 
                         <th data-sortable="true" data-field="@nameof(Product.CreatorTime)" data-width="180"
                             data-align="center" data-halign="center" data-valign="middle">
