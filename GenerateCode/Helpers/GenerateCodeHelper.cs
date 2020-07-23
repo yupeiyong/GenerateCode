@@ -84,7 +84,6 @@ namespace Winform.Helpers
 
                 var destFileName = path.Replace("<##Model_Class_Name##>", className).
                     Replace("<##model_Class_Name##>", firstLowerClassName).
-                    Replace(".<##Model_Namespace_Not_Root##>", noRootNameSpace.Replace(".", @"\")).
                     Replace("<##Model_Namespace_Not_Root##>", noRootNameSpace.Replace(".", @"\"));
 
                 //文件存在，并且不允许覆盖，不执行生成
@@ -104,7 +103,18 @@ namespace Winform.Helpers
                 }
 
                 tempContent = tempContent.Substring(tempBeginIndex + "<##template_Begin##>".Length, tempEndIndex-(tempBeginIndex + "<##template_Begin##>".Length));
-                tempContent = tempContent.Replace("<##Model_Class_Name##>", className).Replace("<##Model_Class_Name##>", firstLowerClassName).Replace("<##Model_Description##>", classDescription);
+                tempContent = tempContent.Replace("<##Model_Class_Name##>", className).
+                    Replace("<##Model_Class_Name##>", firstLowerClassName).
+                    Replace("<##Model_Description##>", classDescription);
+
+                if (string.IsNullOrWhiteSpace(noRootNameSpace))
+                {
+                    tempContent = tempContent.Replace(".<##Model_Namespace_Not_Root##>", "");
+                }
+                else
+                {
+                    tempContent = tempContent.Replace("<##Model_Namespace_Not_Root##>", noRootNameSpace);
+                }
 
                 var fieldStartIndex = tempContent.IndexOf("<##field_Write_Begin##>");
                 if (fieldStartIndex >= 0)

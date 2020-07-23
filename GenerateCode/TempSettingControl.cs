@@ -49,5 +49,15 @@ namespace Winform
 
             OpenFile.Open(fileFullName);
         }
+
+        public void SetIsGenerate(bool isGenerate)
+        {
+            this.chkGenerate.Checked = isGenerate;
+        }
+
+        public void SetOverWrite(bool isOverWrite)
+        {
+            this.chkOverwrite.Checked = isOverWrite;
+        }
     }
 }

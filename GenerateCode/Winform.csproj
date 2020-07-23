@@ -118,6 +118,9 @@
     <None Include="Temps\SearchDto.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Temps\Service.cs2.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Temps\Service.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

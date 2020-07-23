@@ -50,7 +50,26 @@ namespace WinForm
         }
         private void frmGenerate_Load(object sender, EventArgs e)
         {
+            InitTreeView(null);
+        }
+
+        private void InitTreeView(string rootPath)
+        {
             tvDir.CheckBoxes = true;
+            tvDir.Nodes.Clear();
+            if (!string.IsNullOrWhiteSpace(rootPath))
+            {
+                TreeNode subNode = new TreeNode(new DirectoryInfo(rootPath).Name); //实例化
+                subNode.Name = new DirectoryInfo(rootPath).FullName;               //完整目录
+                subNode.Tag = NodeType.Directory;
+                subNode.ImageIndex = IconIndexes.ClosedFolder;       //获取节点显示图片
+                subNode.SelectedImageIndex = IconIndexes.OpenFolder; //选择节点显示图片
+                tvDir.Nodes.Add(subNode);
+                subNode.Nodes.Add("");                               //加载空节点 实现+号
+                subNode.Expand();
+                return;
+            }
+
             //实例化TreeNode类 TreeNode(string text,int imageIndex,int selectImageIndex)            
             TreeNode rootNode = new TreeNode("我的电脑",
                 IconIndexes.MyComputer, IconIndexes.MyComputer);  //载入显示 选择显示
@@ -92,7 +111,6 @@ namespace WinForm
             }
             rootNode.Expand();                  //展开树状视图
         }
-
         private void tvDir_AfterExpand(object sender, TreeViewEventArgs e)
         {
             e.Node.Expand();
@@ -203,7 +221,7 @@ namespace WinForm
 
             foreach (var modelFileName in modelFileNames)
             {
-                GenerateCodeHelper.GenerateCode(modelFileName, generateSettings);
+                textBox1.Text=textBox1.Text+GenerateCodeHelper.GenerateCode(modelFileName, generateSettings);
             }
         }
 
@@ -248,6 +266,47 @@ namespace WinForm
                 lc.Location = new Point(5, index * lc.Height + 5 * (index + 1));
                 pnlTempSettings.Controls.Add(lc);
                 index++;
+            }
+        }
+
+        private void chkTempAll_CheckedChanged(object sender, EventArgs e)
+        {
+            var @checked = chkTempAll.Checked;
+            foreach (var control in pnlTempSettings.Controls)
+            {
+                var tsControl = control as TempSettingControl;
+                if (tsControl != null)
+                {
+                    tsControl.SetIsGenerate(@checked);
+                }
+            }
+        }
+
+        private void chkOverrideAll_CheckedChanged(object sender, EventArgs e)
+        {
+            var @checked = chkOverrideAll.Checked;
+            foreach (var control in pnlTempSettings.Controls)
+            {
+                var tsControl = control as TempSettingControl;
+                if (tsControl != null)
+                {
+                    tsControl.SetOverWrite(@checked);
+                }
+            }
+        }
+
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            var dialog=new FolderBrowserDialog();
+            dialog.SelectedPath = textBox2.Text;
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var path = dialog.SelectedPath;
+                if (!string.IsNullOrWhiteSpace(path))
+                {
+                    textBox2.Text = path;
+                    InitTreeView(path);
+                }
             }
         }
     }
