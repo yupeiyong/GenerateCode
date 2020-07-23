@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="Helpers\DataGridViewHelper.cs" />
     <Compile Include="Helpers\DataValid.cs" />
+    <Compile Include="Helpers\GenerateCodeHelper.cs" />
     <Compile Include="Helpers\OpenFile.cs" />
     <Compile Include="Helpers\PageData.cs" />
     <Compile Include="InputBox.cs">

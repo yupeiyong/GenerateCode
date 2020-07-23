@@ -30,12 +30,7 @@
         {
             this.txtTempName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.txtDestPath = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.chkOverwrite = new System.Windows.Forms.CheckBox();
-            this.btnOpenFolder = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtDestFileName = new System.Windows.Forms.TextBox();
             this.chkGenerate = new System.Windows.Forms.CheckBox();
             this.btnViewTemp = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -57,63 +52,16 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "模板文件名：";
             // 
-            // txtDestPath
-            // 
-            this.txtDestPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDestPath.Location = new System.Drawing.Point(78, 28);
-            this.txtDestPath.Name = "txtDestPath";
-            this.txtDestPath.Size = new System.Drawing.Size(708, 21);
-            this.txtDestPath.TabIndex = 0;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 32);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "目标位置：";
-            // 
             // chkOverwrite
             // 
             this.chkOverwrite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.chkOverwrite.AutoSize = true;
-            this.chkOverwrite.Location = new System.Drawing.Point(792, 6);
+            this.chkOverwrite.Location = new System.Drawing.Point(477, 6);
             this.chkOverwrite.Name = "chkOverwrite";
             this.chkOverwrite.Size = new System.Drawing.Size(72, 16);
             this.chkOverwrite.TabIndex = 2;
             this.chkOverwrite.Text = "是否覆盖";
             this.chkOverwrite.UseVisualStyleBackColor = true;
-            // 
-            // btnOpenFolder
-            // 
-            this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenFolder.Location = new System.Drawing.Point(806, 27);
-            this.btnOpenFolder.Name = "btnOpenFolder";
-            this.btnOpenFolder.Size = new System.Drawing.Size(64, 23);
-            this.btnOpenFolder.TabIndex = 3;
-            this.btnOpenFolder.Text = "打开";
-            this.btnOpenFolder.UseVisualStyleBackColor = true;
-            this.btnOpenFolder.Click += new System.EventHandler(this.btnOpenFolder_Click);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(471, 8);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 12);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "生成文件名：";
-            // 
-            // txtDestFileName
-            // 
-            this.txtDestFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDestFileName.Location = new System.Drawing.Point(544, 4);
-            this.txtDestFileName.Name = "txtDestFileName";
-            this.txtDestFileName.Size = new System.Drawing.Size(242, 21);
-            this.txtDestFileName.TabIndex = 5;
             // 
             // chkGenerate
             // 
@@ -142,16 +90,11 @@
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.btnViewTemp);
             this.Controls.Add(this.chkGenerate);
-            this.Controls.Add(this.txtDestFileName);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.chkOverwrite);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtDestPath);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtTempName);
             this.Name = "TempSettingControl";
-            this.Size = new System.Drawing.Size(871, 54);
+            this.Size = new System.Drawing.Size(557, 30);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,12 +104,7 @@
 
         private System.Windows.Forms.TextBox txtTempName;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtDestPath;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox chkOverwrite;
-        private System.Windows.Forms.Button btnOpenFolder;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtDestFileName;
         private System.Windows.Forms.CheckBox chkGenerate;
         private System.Windows.Forms.Button btnViewTemp;
     }

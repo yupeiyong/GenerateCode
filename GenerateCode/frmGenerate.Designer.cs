@@ -35,7 +35,6 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.pnlTempSettings = new System.Windows.Forms.Panel();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -47,7 +46,7 @@
             this.groupBox1.Controls.Add(this.tvDir);
             this.groupBox1.Location = new System.Drawing.Point(13, 13);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(324, 600);
+            this.groupBox1.Size = new System.Drawing.Size(437, 600);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "选择数据模型文件";
@@ -57,7 +56,7 @@
             this.tvDir.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tvDir.Location = new System.Drawing.Point(3, 17);
             this.tvDir.Name = "tvDir";
-            this.tvDir.Size = new System.Drawing.Size(318, 580);
+            this.tvDir.Size = new System.Drawing.Size(431, 580);
             this.tvDir.TabIndex = 0;
             this.tvDir.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tvDir_AfterCheck);
             this.tvDir.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvDir_BeforeExpand);
@@ -68,14 +67,13 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.textBox2);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.textBox1);
             this.groupBox2.Controls.Add(this.btnGenerate);
             this.groupBox2.Controls.Add(this.pnlTempSettings);
-            this.groupBox2.Location = new System.Drawing.Point(343, 13);
+            this.groupBox2.Location = new System.Drawing.Point(456, 13);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(862, 600);
+            this.groupBox2.Size = new System.Drawing.Size(749, 600);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "生成代码";
@@ -98,7 +96,7 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
-            this.textBox1.Size = new System.Drawing.Size(846, 118);
+            this.textBox1.Size = new System.Drawing.Size(733, 127);
             this.textBox1.TabIndex = 3;
             // 
             // btnGenerate
@@ -117,19 +115,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlTempSettings.AutoScroll = true;
-            this.pnlTempSettings.Location = new System.Drawing.Point(10, 60);
+            this.pnlTempSettings.Location = new System.Drawing.Point(10, 47);
             this.pnlTempSettings.Name = "pnlTempSettings";
-            this.pnlTempSettings.Size = new System.Drawing.Size(846, 389);
+            this.pnlTempSettings.Size = new System.Drawing.Size(733, 402);
             this.pnlTempSettings.TabIndex = 0;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(114, 20);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(659, 34);
-            this.textBox2.TabIndex = 5;
-            this.textBox2.Text = "1、<##Model_Class_Name##>使用原来的类名\r\n2、<##Model_Class_Name##>类名首字母小写";
             // 
             // frmGenerate
             // 
@@ -158,6 +147,5 @@
         private System.Windows.Forms.Panel pnlTempSettings;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
     }
 }

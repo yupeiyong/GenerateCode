@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Winform;
+using Winform.Helpers;
 using Winform.Models;
 using Match = System.Text.RegularExpressions.Match;
 
@@ -185,12 +186,6 @@ namespace WinForm
                     if (string.IsNullOrWhiteSpace(settings.TemplateFileName))
                         throw new Exception("模板文件名为空！");
 
-                    if (string.IsNullOrWhiteSpace(settings.DestFileName))
-                        throw new Exception("文件扩展名不能为空！");
-
-                    if (string.IsNullOrWhiteSpace(settings.DestPath))
-                        throw new Exception("目标文件夹不能为空！");
-
                     generateSettings.Add(settings);
                 }
             }
@@ -208,135 +203,11 @@ namespace WinForm
 
             foreach (var modelFileName in modelFileNames)
             {
-                GenerateCode(modelFileName, generateSettings);
+                GenerateCodeHelper.GenerateCode(modelFileName, generateSettings);
             }
         }
 
 
-        private void GenerateCode(string modelFileName, List<GenerateSettings> settings)
-        {
-            var root = AppDomain.CurrentDomain.BaseDirectory + @"\Temps";
-            var rootDir = new DirectoryInfo(root);
-            if (!rootDir.Exists)
-                rootDir.Create();
-
-            var fInfo = new FileInfo(modelFileName);
-            if (!fInfo.Exists)
-                throw new Exception($"{modelFileName}文件不存在！");
-
-            var shortName = fInfo.Name;
-            var className = shortName.Replace(fInfo.Extension, "");
-            //类名首字母小写
-            var firstLowerClassName = className.Substring(0, 1).ToLower() + className.Substring(1);
-            var lines = File.ReadLines(modelFileName);
-
-            var content = File.ReadAllText(modelFileName);
-            var classDescription = className;
-            var match = Regex.Match(content, @"\[Description\(" + "\"(.*)\"" + @"\)\]\s*\r\n\s*public\s*class");
-            if (match.Success)
-            {
-                classDescription = match.Groups[1].Value;
-            }
-
-            //字段正则匹配
-            var fieldParterrn = @"(/// <summary>\s*\r\n\s*///\s*(.*)\s*/// </summary>\s*.)?public\s*([A-Za-z0-9]*\??)\s*([A-Za-z0-9]*)\s*{\s*get;.*";
-            var fieldMatchs = Regex.Matches(content, fieldParterrn);
-            var fieldParameters = new List<ModelFieldParameters>();
-            foreach (Match m in fieldMatchs)
-            {
-                if (m.Success)
-                {
-                    var parameter = new ModelFieldParameters
-                    {
-                        Annotation = m.Groups[2].Value.Replace("\r", "").Replace("\n", ""),
-                        FieldType = m.Groups[3].Value,
-                        Name = m.Groups[4].Value
-                    };
-                    fieldParameters.Add(parameter);
-                }
-            }
-            foreach (var setting in settings)
-            {
-                var tempContent = File.ReadAllText(Path.Combine(root, setting.TemplateFileName));
-                var path = setting.DestPath;
-                path = path.Replace("<##Model_Class_Name##>", className);
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-                string destFileName = destFileName = setting.DestFileName.Replace("<##Model_Class_Name##>", className).Replace("<##Model_Class_Name##>", firstLowerClassName);
-
-                destFileName = Path.Combine(path, destFileName);
-
-                //文件存在，并且不允许覆盖，不执行生成
-                if (File.Exists(destFileName) && !setting.OverWrite)
-                    continue;
-
-                tempContent = tempContent.Replace("<##Model_Class_Name##>", className).Replace("<##Model_Class_Name##>", firstLowerClassName).Replace("<##Model_Description##>", classDescription);
-
-                var fieldStartIndex = tempContent.IndexOf("<##field_Write_Begin##>");
-                if (fieldStartIndex >= 0)
-                {
-                    var fieldEndIndex = tempContent.IndexOf("<##field_Write_End##>");
-                    if (fieldEndIndex <= 0)
-                        throw new Exception("字段写入没有结束标志！");
-
-                    var nextIndex = fieldEndIndex + "<##field_Write_End##>".Length;
-                    var fieldTempContent = tempContent.Substring(fieldStartIndex, nextIndex - fieldStartIndex);
-
-                    var newFieldTempContent = fieldTempContent.Replace("<##field_Write_Begin##>", "").Replace("<##field_Write_End##>", "");
-                    var sb = new StringBuilder();
-                    foreach (var fParameter in fieldParameters)
-                    {
-                        sb.Append(GetFieldContent(newFieldTempContent, fParameter, className));
-                    }
-
-                    tempContent = tempContent.Replace(fieldTempContent, sb.ToString());
-                }
-                File.WriteAllText(destFileName, tempContent);
-                textBox1.Text = textBox1.Text + "\r\n" + $"{destFileName}生成成功！";
-            }
-        }
-
-        private string GetFieldContent(string temp, ModelFieldParameters parameter, string className)
-        {
-            var str = temp.Replace("<##field_Annotation##>", parameter.Annotation);
-            str = str.Replace("<##field_Name##>", parameter.Name);
-            str = str.Replace("<##Model_Class_Name##>", className);
-            if (str.Contains("<##html_Field_Type##>"))
-            {
-                switch (parameter.FieldType)
-                {
-                    case "long":
-                    case "int":
-                    case "short":
-                    case "double":
-                    case "float":
-                    case "long?":
-                    case "int?":
-                    case "short?":
-                    case "double?":
-                    case "float?":
-                        str = str.Replace("<##html_Field_Type##>", "number");
-                        break;
-                    case "DateTime":
-                    case "DateTime?":
-                        str = str.Replace("<##html_Field_Type##>", "datetime");
-                        break;
-                    default:
-                        str = str.Replace("<##html_Field_Type##>", "text");
-                        break;
-                }
-            }
-
-            if (str.Contains("<##field_Type##>"))
-            {
-                str = str.Replace("<##field_Type##>", parameter.FieldType);
-            }
-
-            return str;
-        }
 
         private void GetCheckedFiles(TreeNode node, List<string> checkedFileNames)
         {

@@ -30,22 +30,11 @@ namespace Winform
             var settings = new GenerateSettings
             {
                 TemplateFileName = txtTempName.Text,
-                DestPath = txtDestPath.Text,
-                DestFileName = txtDestFileName.Text,
                 OverWrite = chkOverwrite.Checked,
                 IsGenerate = chkGenerate.Checked
             };
 
             return settings;
-        }
-
-        private void btnOpenFolder_Click(object sender, EventArgs e)
-        {
-            var f = new FolderBrowserDialog();
-            if (f.ShowDialog(this) == DialogResult.OK)
-            {
-                txtDestPath.Text = f.SelectedPath;
-            }
         }
 
         private void btnViewTemp_Click(object sender, EventArgs e)
