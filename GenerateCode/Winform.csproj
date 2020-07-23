@@ -207,13 +207,13 @@
     <None Include="Temps\Controller.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Temps\Edit.cshtml.temp">
+    <None Include="Temps\Edit.cshtmlx.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Temps\edit.js.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Temps\Index.cshtml.temp">
+    <None Include="Temps\Index.cshtmlx.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Temps\index.js.temp">

@@ -7,19 +7,18 @@
 @using Models.System
 @using Models.LeaseSystem
 @{
-ViewBag.Title = "<##Model_Description##>
-管理";
-var currentUser = (ViewBag.CurrentUser as OnlineUser) ?? new OnlineUser();
+	ViewBag.Title = "<##Model_Description##>管理";
+	var currentUser = (ViewBag.CurrentUser as OnlineUser) ?? new OnlineUser();
 }
 @section css{
-<link href="~/Areas/SystemManage/Content/search-list.css" rel="stylesheet" />
-<link href="~/Lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-<link href="~/Lib/select2-extend.css" rel="stylesheet" />
-<link href="/New/css/NewLayout.css?v=4" rel="stylesheet" />
+	<link href="~/Areas/SystemManage/Content/search-list.css" rel="stylesheet" />
+	<link href="~/Lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+	<link href="~/Lib/select2-extend.css" rel="stylesheet" />
+	<link href="/New/css/NewLayout.css?v=4" rel="stylesheet" />
 }
 <style>
 .negative {
-color: red;
+	color: red;
 }
 </style>
 <div class="container-fluid LayoutBackground">
@@ -59,7 +58,7 @@ color: red;
                         </button>
                     </span>
                     <button type="button" class="btn btn-sm Newbtn" id="btnAdd"
-                            title="新增产品" data-u-url="@Url.Action(" Add")">
+                            title="新增产品" data-u-url="@Url.Action("Add")">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         新增
                     </button>
@@ -73,7 +72,7 @@ color: red;
 
 <div class="row clearfix">
 <div class="col-md-12 NewTableDiv" style="padding-top:20px;">
-    <table data-url="@Url.Action(" GetData")" id="tab"
+    <table data-url="@Url.Action("GetData")" id="tab"
            data-id-field="Id"
            data-resizable="false"
            data-filter-control="true" class="table-bordered tablegroundcolor">
@@ -97,16 +96,15 @@ color: red;
                         data-valign="middle">
                         <##field_Annotation##>
                     </th>
-                    <##field_Write_End##>
-
-                        <th data-sortable="true" data-field="@nameof(Product.CreatorTime)" data-width="180"
-                            data-align="center" data-halign="center" data-valign="middle">
-                            创建时间
-                        </th>
-                        <th data-sortable="true" data-field="@nameof(Product.LastModifyTime)" data-width="180"
-                            data-align="center" data-halign="center" data-valign="middle">
-                            修改时间
-                        </th>
+                <##field_Write_End##>
+                <th data-sortable="true" data-field="@nameof(Product.CreatorTime)" data-width="180"
+                    data-align="center" data-halign="center" data-valign="middle">
+                    创建时间
+                </th>
+                <th data-sortable="true" data-field="@nameof(Product.LastModifyTime)" data-width="180"
+                    data-align="center" data-halign="center" data-valign="middle">
+                    修改时间
+                </th>
             </tr>
         </thead>
     </table>
@@ -114,11 +112,11 @@ color: red;
 </div>
 </div>
 @section scripts{
-<script src="~/Lib/select2/4.0.3/js/select2.min.js"></script>
-<script src="~/Lib/select2/4.0.3/js/select2.full.min.js"></script>
-<script src="~/Lib/select2/4.0.3/js/i18n/zh-CN.js"></script>
-<script src="~/Lib/jquery-validate-extend.js"></script>
-<script src="~/Areas/SystemManage/Scripts/fileUpload.js"></script>
-<script src="~/Areas/SystemManage/Scripts/<##model_Class_Name##>-index.js?ver=2"></script>
+	<script src="~/Lib/select2/4.0.3/js/select2.min.js"></script>
+	<script src="~/Lib/select2/4.0.3/js/select2.full.min.js"></script>
+	<script src="~/Lib/select2/4.0.3/js/i18n/zh-CN.js"></script>
+	<script src="~/Lib/jquery-validate-extend.js"></script>
+	<script src="~/Areas/SystemManage/Scripts/fileUpload.js"></script>
+	<script src="~/Areas/SystemManage/Scripts/<##model_Class_Name##>-index.js?ver=2"></script>
 }
 <##template_End##>

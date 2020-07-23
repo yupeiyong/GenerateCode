@@ -1,0 +1,55 @@
+﻿<##save_FilePath_Begin##>F:\Projects\Asp.net Mvc\莱宝红人数据库\Backup\测试代码生成\DianligaiErp\WebMvc\Areas\SystemManage\Views\<##Model_Class_Name##>\Edit.cshtml<##save_FilePath_End##>
+<##template_Begin##>
+@using Models
+@using Common
+@using DataTransferObjects
+@using DataTransferObjects.Products
+@using Models.Products
+@using ViewModels
+@model <##Model_Class_Name##>
+@{
+	Layout = null;
+	var data = Model?? new <##Model_Class_Name##>();
+	var isAdd = data.Id <= 0;
+}
+<link href="~/Lib/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<link href="~/Areas/SystemManage/Content/Product-edit.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <form class="form-horizontal form-edit" role="form">
+                <div class="row">
+                    <##field_Write_Begin##>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    <##field_Annotation##>：
+                                </label>
+                                <div class="col-sm-8">
+                                    <input type="<##html_Field_Type##>" class="form-control input-sm" name="@nameof(<##Model_Class_Name##>EditDto.<##field_Name##>)" value="@data.<##field_Name##>" required="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <##field_Write_End##>
+                </div>
+
+                <div class="form-group">
+                    <div class="hidden" id="product_edit_hidden">
+                        <input name="@nameof(<##Model_Class_Name##>EditDto.UpdateId)" type="hidden" value="@data.Id" />
+                    </div>
+                    <div class="col-sm-12 text-center buttons">
+                        <button type="button" class="btn btn-success u-btn" id="btnSave" data-url="@Url.Action("Save")">
+                            <i class="fa fa-save" aria-hidden="true"></i>
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/Lib/select2/4.0.3/js/select2.min.js"></script>
+<script src="~/Lib/select2/4.0.3/js/select2.full.min.js"></script>
+<script src="~/Areas/SystemManage/Scripts/<##model_Class_Name##>-edit.js"></script>
+<##template_End##>
