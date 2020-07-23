@@ -74,21 +74,27 @@ namespace Winform.Helpers
                 var tempContent = File.ReadAllText(Path.Combine(root, setting.TemplateFileName));
                 //读取路径设置
                 var pathBeginIndex = tempContent.IndexOf("<##save_FilePath_Begin##>");
-                var pathEndIndex= tempContent.IndexOf("<##save_FilePath_End##>");
+                var pathEndIndex = tempContent.IndexOf("<##save_FilePath_End##>");
                 if (pathBeginIndex < 0 || pathEndIndex <= 0)
                 {
                     throw new Exception($"{setting.TemplateFileName},路径的开始和结束标志没有设置！");
                 }
                 //读取路径
-                var path = tempContent.Substring(pathBeginIndex+ "<##save_FilePath_Begin##>".Length,pathEndIndex);
+                var path = tempContent.Substring(pathBeginIndex + "<##save_FilePath_Begin##>".Length, pathEndIndex - (pathBeginIndex + "<##save_FilePath_Begin##>".Length));
 
                 var destFileName = path.Replace("<##Model_Class_Name##>", className).
                     Replace("<##model_Class_Name##>", firstLowerClassName).
-                    Replace("<##Model_Namespace_Not_Root##>", noRootNameSpace);
+                    Replace(".<##Model_Namespace_Not_Root##>", noRootNameSpace.Replace(".", @"\")).
+                    Replace("<##Model_Namespace_Not_Root##>", noRootNameSpace.Replace(".", @"\"));
 
                 //文件存在，并且不允许覆盖，不执行生成
                 if (File.Exists(destFileName) && !setting.OverWrite)
                     continue;
+
+                var dInfo=new FileInfo(destFileName);
+                var dir = dInfo.Directory;
+                if(!dir.Exists)
+                    dir.Create();
 
                 var tempBeginIndex = tempContent.IndexOf("<##template_Begin##>");
                 var tempEndIndex = tempContent.IndexOf("<##template_End##>");
@@ -97,7 +103,7 @@ namespace Winform.Helpers
                     throw new Exception($"{setting.TemplateFileName},模板的开始和结束标志没有设置！");
                 }
 
-                tempContent = tempContent.Substring(tempBeginIndex + "<##template_Begin##>".Length, tempEndIndex);
+                tempContent = tempContent.Substring(tempBeginIndex + "<##template_Begin##>".Length, tempEndIndex-(tempBeginIndex + "<##template_Begin##>".Length));
                 tempContent = tempContent.Replace("<##Model_Class_Name##>", className).Replace("<##Model_Class_Name##>", firstLowerClassName).Replace("<##Model_Description##>", classDescription);
 
                 var fieldStartIndex = tempContent.IndexOf("<##field_Write_Begin##>");
@@ -119,7 +125,7 @@ namespace Winform.Helpers
 
                     tempContent = tempContent.Replace(fieldTempContent, sb.ToString());
                 }
-                File.WriteAllText(destFileName, tempContent,Encoding.UTF8);
+                File.WriteAllText(destFileName, tempContent, Encoding.UTF8);
                 result.AppendLine($"{destFileName}生成成功！");
             }
 
