@@ -64,6 +64,9 @@ namespace Winform.Helpers
                         FieldType = m.Groups[3].Value,
                         Name = m.Groups[4].Value
                     };
+                    if (string.IsNullOrWhiteSpace(parameter.Annotation))
+                        parameter.Annotation = parameter.Name;
+
                     fieldParameters.Add(parameter);
                 }
             }
@@ -104,7 +107,7 @@ namespace Winform.Helpers
 
                 tempContent = tempContent.Substring(tempBeginIndex + "<##template_Begin##>".Length, tempEndIndex-(tempBeginIndex + "<##template_Begin##>".Length));
                 tempContent = tempContent.Replace("<##Model_Class_Name##>", className).
-                    Replace("<##Model_Class_Name##>", firstLowerClassName).
+                    Replace("<##model_Class_Name##>", firstLowerClassName).
                     Replace("<##Model_Description##>", classDescription);
 
                 if (string.IsNullOrWhiteSpace(noRootNameSpace))
