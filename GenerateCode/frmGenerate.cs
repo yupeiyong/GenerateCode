@@ -259,13 +259,13 @@ namespace WinForm
             {
                 var tempContent = File.ReadAllText(Path.Combine(root, setting.TemplateFileName));
                 var path = setting.DestPath;
-                path = path.Replace("{ModelClassName}", className);
+                path = path.Replace("<##Model_Class_Name##>", className);
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
                 }
 
-                string destFileName = destFileName = setting.DestFileName.Replace("{ModelClassName}", className).Replace("{modelClassName}", firstLowerClassName);
+                string destFileName = destFileName = setting.DestFileName.Replace("<##Model_Class_Name##>", className).Replace("<##Model_Class_Name##>", firstLowerClassName);
 
                 destFileName = Path.Combine(path, destFileName);
 
@@ -273,19 +273,19 @@ namespace WinForm
                 if (File.Exists(destFileName) && !setting.OverWrite)
                     continue;
 
-                tempContent = tempContent.Replace("{ModelClassName}", className).Replace("{modelClassName}", firstLowerClassName).Replace("{{ModelDescription}}", classDescription);
+                tempContent = tempContent.Replace("<##Model_Class_Name##>", className).Replace("<##Model_Class_Name##>", firstLowerClassName).Replace("<##Model_Description##>", classDescription);
 
-                var fieldStartIndex = tempContent.IndexOf("#######{{field_write_begin}}");
+                var fieldStartIndex = tempContent.IndexOf("<##field_Write_Begin##>");
                 if (fieldStartIndex >= 0)
                 {
-                    var fieldEndIndex = tempContent.IndexOf("#######{{field_write_end}}");
+                    var fieldEndIndex = tempContent.IndexOf("<##field_Write_End##>");
                     if (fieldEndIndex <= 0)
                         throw new Exception("字段写入没有结束标志！");
 
-                    var nextIndex = fieldEndIndex + "#######{{field_write_end}}".Length;
+                    var nextIndex = fieldEndIndex + "<##field_Write_End##>".Length;
                     var fieldTempContent = tempContent.Substring(fieldStartIndex, nextIndex - fieldStartIndex);
 
-                    var newFieldTempContent = fieldTempContent.Replace("#######{{field_write_begin}}", "").Replace("#######{{field_write_end}}", "");
+                    var newFieldTempContent = fieldTempContent.Replace("<##field_Write_Begin##>", "").Replace("<##field_Write_End##>", "");
                     var sb = new StringBuilder();
                     foreach (var fParameter in fieldParameters)
                     {
@@ -301,10 +301,10 @@ namespace WinForm
 
         private string GetFieldContent(string temp, ModelFieldParameters parameter, string className)
         {
-            var str = temp.Replace("{{field_Annotation}}", parameter.Annotation);
-            str = str.Replace("{{field_Name}}", parameter.Name);
-            str = str.Replace("{ModelClassName}", className);
-            if (str.Contains("{{html_field_type}}"))
+            var str = temp.Replace("<##field_Annotation##>", parameter.Annotation);
+            str = str.Replace("<##field_Name##>", parameter.Name);
+            str = str.Replace("<##Model_Class_Name##>", className);
+            if (str.Contains("<##html_Field_Type##>"))
             {
                 switch (parameter.FieldType)
                 {
@@ -318,21 +318,21 @@ namespace WinForm
                     case "short?":
                     case "double?":
                     case "float?":
-                        str = str.Replace("{{html_field_type}}", "number");
+                        str = str.Replace("<##html_Field_Type##>", "number");
                         break;
                     case "DateTime":
                     case "DateTime?":
-                        str = str.Replace("{{html_field_type}}", "datetime");
+                        str = str.Replace("<##html_Field_Type##>", "datetime");
                         break;
                     default:
-                        str = str.Replace("{{html_field_type}}", "text");
+                        str = str.Replace("<##html_Field_Type##>", "text");
                         break;
                 }
             }
 
-            if (str.Contains("{{field_type}}"))
+            if (str.Contains("<##field_Type##>"))
             {
-                str = str.Replace("{{field_type}}", parameter.FieldType);
+                str = str.Replace("<##field_Type##>", parameter.FieldType);
             }
 
             return str;

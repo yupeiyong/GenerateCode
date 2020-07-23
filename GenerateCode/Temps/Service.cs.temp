@@ -1,4 +1,6 @@
-﻿using System;
+﻿<##save_FilePath_Begin##>C:\123\Service\<##Model_Namespace_Not_Root##>\<##Model_Class_Name##>.cs<##save_FilePath_End##>
+<##template_Begin##>
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -12,22 +14,22 @@ using Service.Auth;
 using Service.Ioc;
 using YPY.Library;
 
-namespace Service
+namespace Service.<##Model_Namespace_Not_Root##>
 {
     
     /// <summary>
-    /// {{ModelDescription}}业务操作
+    /// <##Model_Description##>业务操作
     /// </summary>
-    public class {ModelClassName}Service
+    public class <##Model_Class_Name##>Service
     {
-        private readonly string _modelDescription = typeof({ModelClassName}).GetDescription();
+        private readonly string _modelDescription = typeof(<##Model_Class_Name##>).GetDescription();
 
-        public List<{ModelClassName}> Search({ModelClassName}SearchDto dto)
+        public List<<##Model_Class_Name##>> Search(<##Model_Class_Name##>SearchDto dto)
         {
             var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
             using (var dao = DBContextFactory.GetDbContext(databaseName))
             {
-                var dataSource = dao.Set<{ModelClassName}>().AsNoTracking().AsQueryable();
+                var dataSource = dao.Set<<##Model_Class_Name##>>().AsNoTracking().AsQueryable();
 
                 dataSource = dataSource.WhereDateTime(nameof(Order.CreatorTime), dto.StartCreatorTime, dto.EndCreatorTime);
 
@@ -55,7 +57,7 @@ namespace Service
 
 
 
-        public long Save({ModelClassName}EditDto dto)
+        public long Save(<##Model_Class_Name##>EditDto dto)
         {
             if (dto.UpdateId > 0)
             {
@@ -68,40 +70,40 @@ namespace Service
         }
 
 
-        private void ValidateEditDto({ModelClassName}EditDto dto)
+        private void ValidateEditDto(<##Model_Class_Name##>EditDto dto)
         {
 
         }
 
-        public long Add({ModelClassName}EditDto dto)
+        public long Add(<##Model_Class_Name##>EditDto dto)
         {
             ValidateEditDto(dto);
 
-            var data = dto.MapTo<{ModelClassName}>();
+            var data = dto.MapTo<<##Model_Class_Name##>>();
             data.CreatorTime = DateTime.Now;
             data.LastModifyTime = DateTime.Now;
 
             var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
             using (var dao = DBContextFactory.GetDbContext(databaseName))
             {
-                dao.Set<{ModelClassName}>().Add(data);
+                dao.Set<<##Model_Class_Name##>>().Add(data);
                 dao.SaveChanges();
                 return data.Id;
             }
         }
 
 
-        public long Update({ModelClassName}EditDto dto)
+        public long Update(<##Model_Class_Name##>EditDto dto)
         {
             var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
             using (var dao = DBContextFactory.GetDbContext(databaseName))
             {
-                var data = dao.Set<{ModelClassName}>().FirstOrDefault(tr => tr.Id == dto.UpdateId);
+                var data = dao.Set<<##Model_Class_Name##>>().FirstOrDefault(tr => tr.Id == dto.UpdateId);
                 if (data == null)
                     throw new Exception($"错误，Id={dto.UpdateId}的{_modelDescription}记录不存在，修改失败！");
 
                 ValidateEditDto(dto);
-                dto.MapTo<{ModelClassName}>(data);
+                dto.MapTo<<##Model_Class_Name##>>(data);
 
                 data.LastModifyTime = DateTime.Now;
                 dao.SaveChanges();
@@ -119,24 +121,25 @@ namespace Service
             {
                 foreach (var id in ids)
                 {
-                    var data = dao.Set<{ModelClassName}>().FirstOrDefault(b => b.Id == id);
+                    var data = dao.Set<<##Model_Class_Name##>>().FirstOrDefault(b => b.Id == id);
                     if (data == null)
                         throw new Exception($"错误，{_modelDescription}不存在！(Id:{id})");
 
-                    dao.Set<{ModelClassName}>().Remove(data);
+                    dao.Set<<##Model_Class_Name##>>().Remove(data);
                 }
                 dao.SaveChanges();
             }
         }
 
 
-        public {ModelClassName} GetDataById(long id)
+        public <##Model_Class_Name##> GetDataById(long id)
         {
             var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
             using (var dao = DBContextFactory.GetDbContext(databaseName))
             {
-                return dao.Set<{ModelClassName}>().FirstOrDefault(b => b.Id == id);
+                return dao.Set<<##Model_Class_Name##>>().FirstOrDefault(b => b.Id == id);
             }
         }
     }
 }
+<##template_End##>

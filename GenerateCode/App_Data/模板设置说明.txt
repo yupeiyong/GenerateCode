@@ -1,0 +1,32 @@
+﻿一、指令格式：
+	<##指令名称##>
+二、具体指令：
+	1、<##Model_Class_Name##>使用原来的类名
+	2、<##model_Class_Name##>类名首字母小写
+	3、<##Model_Description##>类的文字描述，使用类中的[Description("内容")]替换
+	4、字段写入开始：<##field_Write_Begin##>
+	5、字段写入结束：<##field_Write_End##>
+	6、字段的注释，用于描述：<##field_Annotation##>
+	7、字段的名称，用于指示字段名称：<##field_Name##>
+	8、html页面的字段类型，<##html_Field_Type##>
+	9、字段类型，<##field_Type##>
+	10、文件保存路径<##save_FilePath_Begin##>C:\123\<##save_FilePath_End##>
+	   路径可以使用命名空间来生成<##Model_Namespace##>
+	   1）、<##save_FilePath_Begin##>C:\123\<##Model_Namespace##>\<##Model_Class_Name##>.cs<##save_FilePath_End##>，命名空间：Service.Product,最终可能是C:\123\Service\Product\Process.cs
+	   2）、<##Model_Namespace_Not_Root##>使用命名空间来生成路径，但不使用顶级命名空间，如命名空间：Service.Product，
+			<##save_FilePath_Begin##>C:\123\Service\<##Model_Namespace_Not_Root##>\<##Model_Class_Name##>.cs<##save_FilePath_End##>最终可能是C:\123\Service\Product\Process.cs
+	11、模板开始和结束指令：<##template_Begin##><##template_End##>
+三、示例
+
+<##field_Write_Begin##>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                <##field_Annotation##>:
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="<##html_Field_Type##>" class="form-control input-sm" name="@nameof(<##Model_Class_Name##>EditDto.<##field_Name##>)" value="@data.<##field_Name##>" required="true"/>
+                            </div>
+                        </div>
+                    </div>
+	<##field_Write_End##>

@@ -1,9 +1,16 @@
-﻿using System;
+﻿<##save_FilePath_Begin##>C:\123\Service\<##Model_Namespace_Not_Root##>\<##Model_Class_Name##>.cs<##save_FilePath_End##>
+<##template_Begin##>
+using System;
 using YPY.Asp.Net.DataTransferObjects;
 
-namespace DataTransferObjects.Products
+namespace DataTransferObjects.<##Model_Namespace_Not_Root##>
 {
-    public class {ModelClassName}SearchDto:BaseSearchDto
+    public class <##Model_Class_Name##>SearchDto:BaseSearchDto
     {
+        public DateTime? StartCreatorTime { get; set; }
+
+        public DateTime? EndCreatorTime { get; set; }
     }
 }
+
+<##template_End##>

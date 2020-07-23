@@ -1,0 +1,4 @@
+﻿<##saveFilePath_begin##>C:\123\<##Model_Namespace##>\<##ModelClassName##>.cs<##saveFilePath_end##>
+<##template_begin##>
+	这里是模板内容
+<##template_end##>

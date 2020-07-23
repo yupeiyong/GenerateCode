@@ -1,20 +1,23 @@
-﻿using System;
+﻿<##save_FilePath_Begin##>C:\123\Service\<##Model_Namespace_Not_Root##>\<##Model_Class_Name##>.cs<##save_FilePath_End##>
+<##template_Begin##>
+using System;
 using System.Collections.Generic;
 using Common.Log;
 using Models.Enum;
 using Newtonsoft.Json;
 
-namespace DataTransferObjects.Products
+namespace DataTransferObjects.<##Model_Namespace_Not_Root##>
 {
-    public class {ModelClassName}EditDto
+    public class <##Model_Class_Name##>EditDto
     {
         public long UpdateId { get; set; }
 
-#######{{field_write_begin}}
+<##field_Write_Begin##>
     /// <summary>
-    /// {{field_Annotation}}
+    /// <##field_Annotation##>
     /// </summary>
-    public {{field_type}} {{field_Name}} { get; set; }
-#######{{field_write_end}}
+    public <##field_Type##> <##field_Name##> { get; set; }
+<##field_Write_End##>
     }
 }
+<##template_End##>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿<##save_FilePath_Begin##>C:\123\<##Model_Class_Name##>Controller.cs<##save_FilePath_End##>
+<##template_Begin##>
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,18 +14,18 @@ using YPY.Asp.Net.DataTransferObjects;
 namespace WebMvc.Areas.SystemManage.Controllers
 {
     /// <summary>
-    /// {{ModelDescription}}控制器
+    /// <##Model_Description##>控制器
     /// </summary>
-    public class {ModelClassName}Controller : BaseAdminController
+    public class <##Model_Class_Name##>Controller : BaseAdminController
     {
         private readonly string _modelDescription;
 
-        public {ModelClassName}Controller()
+        public <##Model_Class_Name##>Controller()
         {
-            _modelDescription = typeof({ModelClassName}).GetDescription();
+            _modelDescription = typeof(<##Model_Class_Name##>).GetDescription();
         }
 
-        public {ModelClassName}Service {ModelClassName}Service { get; set; }
+        public <##Model_Class_Name##>Service <##Model_Class_Name##>Service { get; set; }
 
 
         public ActionResult Index()
@@ -31,10 +33,10 @@ namespace WebMvc.Areas.SystemManage.Controllers
             return View();
         }
 
-        public ContentResult GetData({ModelClassName}SearchDto dto)
+        public ContentResult GetData(<##Model_Class_Name##>SearchDto dto)
         {
-            var rows = {ModelClassName}Service.Search(dto);
-            var result = new ResultInfo<{ModelClassName}>
+            var rows = <##Model_Class_Name##>Service.Search(dto);
+            var result = new ResultInfo<<##Model_Class_Name##>>
             {
                 IsSuccess = true,
                 Total = dto.TotalCount,
@@ -48,11 +50,8 @@ namespace WebMvc.Areas.SystemManage.Controllers
 
         public ActionResult Edit(long id = -1)
         {
-            var viewModel = new {ModelClassName}EditViewModel();
-            var data = id > 0 ? ({ModelClassName}Service.GetDataById(id) ?? new {ModelClassName}()) : new {ModelClassName}();
-
-            viewModel.{ModelClassName} = data;
-            return View(viewModel);
+            var data = id > 0 ? (<##Model_Class_Name##>Service.GetDataById(id) ?? new <##Model_Class_Name##>()) : new <##Model_Class_Name##>();
+            return View(data);
         }
 
 
@@ -62,10 +61,10 @@ namespace WebMvc.Areas.SystemManage.Controllers
         }
 
         [HttpPost]
-        public JsonResult Save({ModelClassName}EditDto dto)
+        public JsonResult Save(<##Model_Class_Name##>EditDto dto)
         {
             dto.OperatorId = CurrentOnlineUser.UserId;
-            {ModelClassName}Service.Save(dto);
+            <##Model_Class_Name##>Service.Save(dto);
 
             return Json(new BaseResponseDto { Message = "保存成功！", Success = true, Title = _modelDescription });
         }
@@ -77,8 +76,9 @@ namespace WebMvc.Areas.SystemManage.Controllers
             if (!CurrentOnlineUser.Role.HasValue || (CurrentOnlineUser.Role.Value != RoleEnum.Admin && CurrentOnlineUser.Role.Value != RoleEnum.WarehouseKeeper))
                 return Json(new BaseResponseDto { Message = "您没有操作权限！", Success = true, Title = _modelDescription });
 
-            {ModelClassName}Service.Remove(id);
+            <##Model_Class_Name##>Service.Remove(id);
             return Json(new BaseResponseDto { Message = "删除成功！", Success = true, Title = _modelDescription });
         }
     }
 }
+<##template_End##>

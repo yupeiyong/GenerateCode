@@ -1,4 +1,6 @@
-﻿$(function () {
+﻿<##save_FilePath_Begin##>C:\123\script\<##model_Class_Name##>_index.js<##save_FilePath_End##>
+<##template_Begin##>
+$(function () {
     "use strict";
 
     var addDefaultValue = "-- 无 --";
@@ -49,10 +51,10 @@
 
     window.operateFormatter = function (value, row, index) {
         return [
-            "<a  title='编辑' href=\"#\" class=\"u-edit btn btncolor\" data-u-url=\"/SystemManage/{ModelClassName}/Edit/" + value + "\">",
+            "<a  title='编辑' href=\"#\" class=\"u-edit btn btncolor\" data-u-url=\"/SystemManage/<##Model_Class_Name##>/Edit/" + value + "\">",
             "<i class=\"fa fa-lg fa-edit\" aria-hidden=\"true\"></i>",
             "</a>",
-            "<a title='删除' href=\"#\" class=\" u-delete btn  btncolor\" data-u-url=\"/SystemManage/{ModelClassName}/Remove/" + value + "\">",
+            "<a title='删除' href=\"#\" class=\" u-delete btn  btncolor\" data-u-url=\"/SystemManage/<##Model_Class_Name##>/Remove/" + value + "\">",
             "<i class=\"fa fa-lg fa-trash\" aria-hidden=\"true\"></i>",
             "</a>"
         ].join("");
@@ -68,7 +70,7 @@
         $("#btnAdd, .table .u-edit").off("click").on("click", function () {
             var $this = $(this);
 
-            var title = "新增-{{ModelDescription}}";
+            var title = "新增-<##Model_Description##>";
             var isModify = $this.hasClass("u-edit");
             if (isModify) {
                 var $tr = $this.closest("tr");
@@ -76,7 +78,7 @@
                 if (!rowId || rowId.length <= 0) {
                     return false;
                 }
-                title = "修改{{ModelDescription}}  " + rowId;
+                title = "修改<##Model_Description##>  " + rowId;
             }
 
             //获取链接路径
@@ -224,4 +226,4 @@
 
     $("form.search input.textbox-text").first().focus();
 });
-
+<##template_End##>

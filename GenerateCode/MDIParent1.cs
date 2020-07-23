@@ -144,5 +144,11 @@ namespace GenerateCode
         {
             tsmiGenerate.PerformClick();
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frmHelper=new frmHelper();
+            frmHelper.ShowDialog(this);
+        }
     }
 }

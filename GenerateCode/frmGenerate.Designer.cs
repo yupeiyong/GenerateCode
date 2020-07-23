@@ -129,7 +129,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(659, 34);
             this.textBox2.TabIndex = 5;
-            this.textBox2.Text = "1、{ModelClassName}使用原来的类名\r\n2、{modelClassName}类名首字母小写";
+            this.textBox2.Text = "1、<##Model_Class_Name##>使用原来的类名\r\n2、<##Model_Class_Name##>类名首字母小写";
             // 
             // frmGenerate
             // 
