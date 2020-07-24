@@ -10,6 +10,12 @@ using Service.SystemManage;
 using ViewModels;
 using Web.Framework.BaseControllers;
 using YPY.Asp.Net.DataTransferObjects;
+using Newtonsoft.Json;
+using YPY.Library;
+using Models.Enum;
+using Models.<##Model_Namespace_Not_Root##>;
+using DataTransferObjects.<##Model_Namespace_Not_Root##>;
+using Service.<##Model_Namespace_Not_Root##>;
 
 namespace WebMvc.Areas.SystemManage.Controllers
 {
@@ -63,7 +69,6 @@ namespace WebMvc.Areas.SystemManage.Controllers
         [HttpPost]
         public JsonResult Save(<##Model_Class_Name##>EditDto dto)
         {
-            dto.OperatorId = CurrentOnlineUser.UserId;
             <##Model_Class_Name##>Service.Save(dto);
 
             return Json(new BaseResponseDto { Message = "保存成功！", Success = true, Title = _modelDescription });
@@ -73,7 +78,7 @@ namespace WebMvc.Areas.SystemManage.Controllers
         [HttpPost]
         public JsonResult Remove(params long[] id)
         {
-            if (!CurrentOnlineUser.Role.HasValue || (CurrentOnlineUser.Role.Value != RoleEnum.Admin && CurrentOnlineUser.Role.Value != RoleEnum.WarehouseKeeper))
+            if (!CurrentOnlineUser.Role.HasValue || (CurrentOnlineUser.Role.Value != RoleEnum.Admin))
                 return Json(new BaseResponseDto { Message = "您没有操作权限！", Success = true, Title = _modelDescription });
 
             <##Model_Class_Name##>Service.Remove(id);

@@ -6,6 +6,9 @@
 @using DataTransferObjects.Products
 @using Models.Products
 @using ViewModels
+@using Models.<##Model_Namespace_Not_Root##>
+@using DataTransferObjects.<##Model_Namespace_Not_Root##>
+
 @model <##Model_Class_Name##>
 @{
 	Layout = null;

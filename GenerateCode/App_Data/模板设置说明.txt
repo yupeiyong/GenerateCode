@@ -16,6 +16,8 @@
 	   2）、<##Model_Namespace_Not_Root##>使用命名空间来生成路径，但不使用顶级命名空间，如命名空间：Service.Product，
 			<##save_FilePath_Begin##>C:\123\Service\<##Model_Namespace_Not_Root##>\<##Model_Class_Name##>.cs<##save_FilePath_End##>最终可能是C:\123\Service\Product\Process.cs
 	11、模板开始和结束指令：<##template_Begin##><##template_End##>
+	12、命名空间的设置：using Models.<##Model_Namespace_Not_Root##>、namespace Service.<##Model_Namespace_Not_Root##>
+		如：using Models.<##Model_Namespace_Not_Root##>生成为，using Models.My
 三、示例
 
 <##field_Write_Begin##>

@@ -2,17 +2,22 @@
 <##template_Begin##>
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.Objects.SqlClient;
 using System.Linq;
+using System.Linq.Dynamic;
+using Common.Security;
 using Data;
-using DataTransferObjects.Orders;
+using DataTransferObjects.Products;
 using Models.Enum;
 using Models.Orders;
+using Models.Products;
 using Models.System;
-using Newtonsoft.Json;
-using Service.Auth;
 using Service.Ioc;
 using YPY.Library;
+using Models.<##Model_Namespace_Not_Root##>;
+using DataTransferObjects.<##Model_Namespace_Not_Root##>;
 
 namespace Service.<##Model_Namespace_Not_Root##>
 {

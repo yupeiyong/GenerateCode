@@ -13,6 +13,8 @@ using Newtonsoft.Json;
 using Service.Auth;
 using Service.Ioc;
 using YPY.Library;
+using Models.<##Model_Namespace_Not_Root##>;
+using DataTransferObjects.<##Model_Namespace_Not_Root##>;
 
 namespace Service.<##Model_Namespace_Not_Root##>
 {

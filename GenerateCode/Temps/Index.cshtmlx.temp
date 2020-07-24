@@ -5,7 +5,8 @@
 @using Models.Enum
 @using Models.Products
 @using Models.System
-@using Models.LeaseSystem
+@using Models.<##Model_Namespace_Not_Root##>
+@using DataTransferObjects.<##Model_Namespace_Not_Root##>
 @{
 	ViewBag.Title = "<##Model_Description##>管理";
 	var currentUser = (ViewBag.CurrentUser as OnlineUser) ?? new OnlineUser();
@@ -87,7 +88,7 @@
                     data-align="center" data-halign="center" data-valign="middle">
                     操作
                 </th>
-                <th data-sortable="false" data-field="@nameof(Product.Id)" data-visible="false" data-width="0"
+                <th data-sortable="false" data-field="Id" data-visible="false" data-width="0"
                     data-align="center" data-halign="center" data-valign="middle">
                     Id
                 </th>
@@ -97,11 +98,11 @@
                         <##field_Annotation##>
                     </th>
                 <##field_Write_End##>
-                <th data-sortable="true" data-field="@nameof(Product.CreatorTime)" data-width="180"
+                <th data-sortable="true" data-field="CreatorTime" data-width="180"
                     data-align="center" data-halign="center" data-valign="middle">
                     创建时间
                 </th>
-                <th data-sortable="true" data-field="@nameof(Product.LastModifyTime)" data-width="180"
+                <th data-sortable="true" data-field="LastModifyTime" data-width="180"
                     data-align="center" data-halign="center" data-valign="middle">
                     修改时间
                 </th>
