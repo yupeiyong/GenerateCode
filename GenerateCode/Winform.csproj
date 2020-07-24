@@ -128,6 +128,9 @@
     <None Include="App_Data\EditDto.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="App_Data\Index.cshtmlx.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="App_Data\index.js.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
