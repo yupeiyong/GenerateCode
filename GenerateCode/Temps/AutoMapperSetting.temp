@@ -1,4 +1,4 @@
 ﻿<##save_FilePath_Begin##>F:\automapper20200724.txt<##save_FilePath_End##>
-<##template_Begin##>
+<##model_Foreach_Begin##>
 	cfg.CreateMap(typeof(<##Model_Class_Name##>EditDto), typeof(<##Model_Class_Name##>));
-<##template_End##>
+<##model_Foreach_End##>
