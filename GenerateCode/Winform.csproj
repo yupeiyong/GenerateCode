@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Models\GenerateSettings.cs" />
     <Compile Include="Models\ModelFieldParameters.cs" />
+    <Compile Include="Models\ModelParameter.cs" />
     <Compile Include="Models\Template.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,7 +113,40 @@
     <Compile Include="TempSettingControl.Designer.cs">
       <DependentUpon>TempSettingControl.cs</DependentUpon>
     </Compile>
+    <None Include="App_Data\AutoMapperSetting.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\Controller.cs.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\Edit.cshtmlx.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\edit.js.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\EditDto.cs.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\index.js.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\MenuSettings.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\SearchDto.cs.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\Service.cs.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App_Data\Service.cs2.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Temps\EditDto.cs.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Temps\AutoMapperSetting.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Temps\SearchDto.cs.temp">
@@ -213,7 +247,7 @@
     <None Include="Temps\edit.js.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Temps\Index.cshtmlx.temp">
+    <None Include="Temps\MenuSettings.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Temps\index.js.temp">

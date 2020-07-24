@@ -18,6 +18,7 @@
 	11、模板开始和结束指令：<##template_Begin##><##template_End##>
 	12、命名空间的设置：using Models.<##Model_Namespace_Not_Root##>、namespace Service.<##Model_Namespace_Not_Root##>
 		如：using Models.<##Model_Namespace_Not_Root##>生成为，using Models.My
+	13、<##model_Foreach_Begin##>数据模型循环内容<###model_Foreach_End##>，主要用于菜单生成，配置等
 三、示例
 
 <##field_Write_Begin##>

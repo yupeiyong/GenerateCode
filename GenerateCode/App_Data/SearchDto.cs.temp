@@ -1,0 +1,16 @@
+﻿<##save_FilePath_Begin##>F:\Projects\Asp.net Mvc\莱宝红人数据库\Backup\测试代码生成\DianligaiErp\DataTransferObjects\<##Model_Namespace_Not_Root##>\<##Model_Class_Name##>SearchDto.cs<##save_FilePath_End##>
+<##template_Begin##>
+using System;
+using YPY.Asp.Net.DataTransferObjects;
+
+namespace DataTransferObjects.<##Model_Namespace_Not_Root##>
+{
+    public class <##Model_Class_Name##>SearchDto:BaseSearchDto
+    {
+        public DateTime? StartCreatorTime { get; set; }
+
+        public DateTime? EndCreatorTime { get; set; }
+    }
+}
+
+<##template_End##>

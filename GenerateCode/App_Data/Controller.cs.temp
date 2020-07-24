@@ -1,0 +1,89 @@
+﻿<##save_FilePath_Begin##>F:\Projects\Asp.net Mvc\莱宝红人数据库\Backup\测试代码生成\DianligaiErp\WebMvc\Areas\SystemManage\Controllers\<##Model_Class_Name##>Controller.cs<##save_FilePath_End##>
+<##template_Begin##>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using DataTransferObjects.System;
+using Service.SystemManage;
+using ViewModels;
+using Web.Framework.BaseControllers;
+using YPY.Asp.Net.DataTransferObjects;
+using Newtonsoft.Json;
+using YPY.Library;
+using Models.Enum;
+using Models.<##Model_Namespace_Not_Root##>;
+using DataTransferObjects.<##Model_Namespace_Not_Root##>;
+using Service.<##Model_Namespace_Not_Root##>;
+
+namespace WebMvc.Areas.SystemManage.Controllers
+{
+    /// <summary>
+    /// <##Model_Description##>控制器
+    /// </summary>
+    public class <##Model_Class_Name##>Controller : BaseAdminController
+    {
+        private readonly string _modelDescription;
+
+        public <##Model_Class_Name##>Controller()
+        {
+            _modelDescription = typeof(<##Model_Class_Name##>).GetDescription();
+        }
+
+        public <##Model_Class_Name##>Service <##Model_Class_Name##>Service { get; set; }
+
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ContentResult GetData(<##Model_Class_Name##>SearchDto dto)
+        {
+            var rows = <##Model_Class_Name##>Service.Search(dto);
+            var result = new ResultInfo<<##Model_Class_Name##>>
+            {
+                IsSuccess = true,
+                Total = dto.TotalCount,
+                Data = rows
+            };
+            var str = JsonConvert.SerializeObject(result,
+                new JsonSerializerSettings { DateFormatString = "yyyy-MM-dd HH:mm" });
+            return Content(str);
+        }
+
+
+        public ActionResult Edit(long id = -1)
+        {
+            var data = id > 0 ? (<##Model_Class_Name##>Service.GetDataById(id) ?? new <##Model_Class_Name##>()) : new <##Model_Class_Name##>();
+            return View(data);
+        }
+
+
+        public ActionResult Add()
+        {
+            return RedirectToAction("Edit");
+        }
+
+        [HttpPost]
+        public JsonResult Save(<##Model_Class_Name##>EditDto dto)
+        {
+            <##Model_Class_Name##>Service.Save(dto);
+
+            return Json(new BaseResponseDto { Message = "保存成功！", Success = true, Title = _modelDescription });
+        }
+
+
+        [HttpPost]
+        public JsonResult Remove(params long[] id)
+        {
+            if (!CurrentOnlineUser.Role.HasValue || (CurrentOnlineUser.Role.Value != RoleEnum.Admin))
+                return Json(new BaseResponseDto { Message = "您没有操作权限！", Success = true, Title = _modelDescription });
+
+            <##Model_Class_Name##>Service.Remove(id);
+            return Json(new BaseResponseDto { Message = "删除成功！", Success = true, Title = _modelDescription });
+        }
+    }
+}
+<##template_End##>

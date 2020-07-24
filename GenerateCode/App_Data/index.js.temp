@@ -1,0 +1,229 @@
+﻿<##save_FilePath_Begin##>F:\Projects\Asp.net Mvc\莱宝红人数据库\Backup\测试代码生成\DianligaiErp\WebMvc\Areas\SystemManage\Scripts\<##model_Class_Name##>-index.js<##save_FilePath_End##>
+<##template_Begin##>
+$(function () {
+    "use strict";
+
+    var addDefaultValue = "-- 无 --";
+
+    //转换为select2
+    $("form.search .u-customer-select2").each(function () {
+        //当前对象
+        var $this = $(this);
+        var url = $this.data("url");
+
+        //远程筛选
+        $this.select2({
+            ajax: {
+                url: url,
+                dataType: "json",
+                delay: 250,
+                data: function (params) {
+                    return {
+                        Keywords: params.term,
+                        page: params.page
+                    };
+                },
+                processResults: function (result, params) {
+                    params.page = params.page || 1;
+                    result.Success = result.Success || result.IsSuccess;
+                    if (!result.Success) {
+                        if (ResponseError) {
+                            ResponseError(result);
+                        } else {
+                            layer.msg(result.Message, { time: 5000 });
+                        }
+                        return false;
+                    }
+                    var arr = result.Data || result.data || {};
+                    arr.unshift({ id: 0, text: addDefaultValue });
+                    return {
+                        results: arr
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 0,
+            language: "zh-CN"
+        });
+    });
+
+
+    window.operateFormatter = function (value, row, index) {
+        return [
+            "<a  title='编辑' href=\"#\" class=\"u-edit btn btncolor\" data-u-url=\"/SystemManage/<##Model_Class_Name##>/Edit/" + value + "\">",
+            "<i class=\"fa fa-lg fa-edit\" aria-hidden=\"true\"></i>",
+            "</a>",
+            "<a title='删除' href=\"#\" class=\" u-delete btn  btncolor\" data-u-url=\"/SystemManage/<##Model_Class_Name##>/Remove/" + value + "\">",
+            "<i class=\"fa fa-lg fa-trash\" aria-hidden=\"true\"></i>",
+            "</a>"
+        ].join("");
+    };
+
+
+
+    var $table = $("#tab");
+    //为自定义列设置事件
+    function addCustColClick() {
+
+        //编辑
+        $("#btnAdd, .table .u-edit").off("click").on("click", function () {
+            var $this = $(this);
+
+            var title = "新增-<##Model_Description##>";
+            var isModify = $this.hasClass("u-edit");
+            if (isModify) {
+                var $tr = $this.closest("tr");
+                var rowId = $tr[0].id;
+                if (!rowId || rowId.length <= 0) {
+                    return false;
+                }
+                title = "修改<##Model_Description##>  " + rowId;
+            }
+
+            //获取链接路径
+            var url = $(this).data("u-url");
+
+            //打开编辑页
+            BootstrapDialog.show({
+                title: title,
+                size: BootstrapDialog.SIZE_WIDE,
+                closable: true,
+                closeByBackdrop: false,
+                closeByKeyboard: true,
+                draggable: true,
+                message: function (dialog) {
+                    var content = $('<div></div>');
+                    $.ajax({
+                        url: url,
+                        async: false,
+                        method: 'get',
+                        success: function (result) {
+                            if (result.Success != null && result.Success != undefined && !result.Success) {
+                                if (ResponseError) {
+                                    ResponseError(result);
+                                } else {
+                                    layer.msg(result.Message, { time: 5000 });
+                                }
+                            } else {
+                                content.html(result);
+                            }
+                        },
+                        error: function (xhr, error, errThrow) {
+                            layer.msg(errThrow, { time: 5000 });
+                        },
+                        complete: function (msg, textStatus) {
+                        }
+                    });
+                    return content;
+                },
+                onshow: function (dialogRef) {
+                    dialogRef.$modal.removeAttr('tabindex');
+                },
+                onshown: function (dialogRef) {
+                    //打开页面时设置焦点
+                    $("input.first").focus().select();
+                },
+                onhidden: function (dialogRef) {
+                    $table.bootstrapTable('refresh');
+                }
+            });
+
+            return false;
+        });
+        //删除
+        $(".table .u-delete").off("click").on("click", function (e) {
+            //不执行默认行为
+            e.preventDefault();
+            //当前对象
+            var $this = $(this);
+
+            var $tr = $this.closest("tr");
+            var rowId = $tr[0].id;
+            if (!rowId || rowId.length <= 0) {
+                return false;
+            }
+
+            //获取链接路径
+            var url = $this.data("u-url");
+            //确认删除
+            BootstrapDialog.confirm({
+                title: "删除",
+                message: "确认删除第" + rowId + "条记录吗?",
+                type: BootstrapDialog.TYPE_WARNING,
+                closable: true,
+                draggable: true,
+                btnCancelLabel: "取消",
+                btnOKLabel: "确认",
+                btnOKClass: "btn-warning",
+                callback: function (result) {
+                    if (result) {
+                        $.post(url, null, function (result) {
+                            layer.msg(result.Message, { time: 5000 });
+                            if (result.Success) {
+                                var $this = $(this);
+                                $this.closest(".bootstrap-dialog").modal("hide");
+                                $table.bootstrapTable("refresh");
+                            } else {
+                                if (ResponseError) {
+                                    ResponseError(result);
+                                } else {
+                                    layer.msg(result.Message, { time: 5000 });
+                                }
+                            }
+                        });
+                    } else {
+                        var $this = $(this);
+                        $this.closest(".bootstrap-dialog").modal("hide");
+                    }
+                }
+            });
+            return false;
+        });
+    }
+
+    $table.extendBootstrapTable({
+        searchButton: "#btnSearch",
+        searchForm: "form.search"
+    }).on("load-success.bs.table", function () {
+        //处理获取到的数据
+        addCustColClick();
+    });
+
+
+    $("form.search #btnClear").off("click").on("click", function () {
+        var $this = $(this);
+        var $form = $this.closest("form");
+        $form[0].reset();
+        $form.find(".easyui-combotree").each(function (e) {
+            var $e = $(this);
+            $e.combotree("setValue", "");
+        });
+        $table.bootstrapTable("refresh");
+    });
+
+    //输入框焦点事件
+    $("form.search input").focus(function () {
+        $(this).select();
+    });
+
+    //失去焦点
+    $("form.search input.textbox-text").blur(function () {
+        var k = $(this).parents(".form-group").find("input.textbox-value").val();
+        if (!k) {
+            //$(this).val("");
+            $(this).parents(".form-group").find("select").combotree("setValue", {
+                id: "",
+                text: ""
+            });
+        }
+    }).bind('input propertychange', function () {//检测input框输入值，解决combotree输入掉文字问题
+        $(this).parents(".form-group").find("select").combotree("setValue", {
+            id: "",
+            text: $(this).val()
+        });
+    });
+
+    $("form.search input.textbox-text").first().focus();
+});
+<##template_End##>

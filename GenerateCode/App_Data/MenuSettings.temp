@@ -1,0 +1,8 @@
+﻿<##save_FilePath_Begin##>F:\Projects\Asp.net Mvc\莱宝红人数据库\Backup\测试代码生成\DianligaiErp\WebMvc\Areas\SystemManage\Views\<##Model_Class_Name##>\Index.cshtml<##save_FilePath_End##>
+<##model_Foreach_Begin##>
+    <li class="">
+        <a href="@Url.Action("Index", "<##Model_Class_Name##>")">
+            <span class="text"><##Model_Description##></span>
+        </a>
+    </li>
+<###model_Foreach_End##>

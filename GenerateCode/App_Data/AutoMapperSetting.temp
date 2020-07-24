@@ -1,0 +1,4 @@
+﻿<##save_FilePath_Begin##>F:\Projects\Asp.net Mvc\莱宝红人数据库\Backup\测试代码生成\DianligaiErp\WebMvc\Areas\SystemManage\Views\<##Model_Class_Name##>\Index.cshtml<##save_FilePath_End##>
+<##template_Begin##>
+	cfg.CreateMap(typeof(<##Model_Class_Name##>EditDto), typeof(<##Model_Class_Name##>));
+<##template_End##>

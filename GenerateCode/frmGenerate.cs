@@ -219,9 +219,20 @@ namespace WinForm
             if (modelFileNames.Count == 0)
                 throw new Exception("你选择了0个模型文件！");
 
+            var modelParameters=new List<ModelParameter>();
             foreach (var modelFileName in modelFileNames)
             {
-                textBox1.Text=textBox1.Text+GenerateCodeHelper.GenerateCode(modelFileName, generateSettings);
+                modelParameters.Add(GenerateCodeHelper.GetModelParameters(modelFileName));
+            }
+
+            //foreach (var item in modelParameters)
+            //{
+            //    textBox1.Text = textBox1.Text + GenerateCodeHelper.GenerateCode(item, generateSettings);
+            //}
+
+            foreach (var item in generateSettings)
+            {
+                textBox1.Text = textBox1.Text + GenerateCodeHelper.GenerateCode(modelParameters, item);
             }
         }
 

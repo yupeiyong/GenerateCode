@@ -1,0 +1,147 @@
+﻿<##save_FilePath_Begin##>F:\Projects\Asp.net Mvc\莱宝红人数据库\Backup\测试代码生成\DianligaiErp\Service\<##Model_Namespace_Not_Root##>\<##Model_Class_Name##>Service.cs<##save_FilePath_End##>
+<##template_Begin##>
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using Data;
+using DataTransferObjects.Orders;
+using Models.Enum;
+using Models.Orders;
+using Models.System;
+using Newtonsoft.Json;
+using Service.Auth;
+using Service.Ioc;
+using YPY.Library;
+using Models.<##Model_Namespace_Not_Root##>;
+using DataTransferObjects.<##Model_Namespace_Not_Root##>;
+
+namespace Service.<##Model_Namespace_Not_Root##>
+{
+    
+    /// <summary>
+    /// <##Model_Description##>业务操作
+    /// </summary>
+    public class <##Model_Class_Name##>Service
+    {
+        private readonly string _modelDescription = typeof(<##Model_Class_Name##>).GetDescription();
+
+        public List<<##Model_Class_Name##>> Search(<##Model_Class_Name##>SearchDto dto)
+        {
+            var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
+            using (var dao = DBContextFactory.GetDbContext(databaseName))
+            {
+                var dataSource = dao.Set<<##Model_Class_Name##>>().AsNoTracking().AsQueryable();
+
+                dataSource = dataSource.WhereDateTime(nameof(Order.CreatorTime), dto.StartCreatorTime, dto.EndCreatorTime);
+
+                if (dto.sort != null)
+                {
+                    if (dto.sort.EndsWith("Description"))
+                        dto.sort = dto.sort.Replace("Description", "");
+
+                    var isAsc = string.IsNullOrWhiteSpace(dto.order) || dto.order == "asc";
+                    dataSource = dataSource.OrderByKey(dto.sort, isAsc);
+                }
+                else
+                {
+                    dataSource = dataSource.OrderByDescending(a => a.LastModifyTime);
+                }
+
+                if (dto.IsGetTotalCount)
+                    dto.TotalCount = dataSource.Count();
+
+                return dataSource.Skip(dto.StartIndex).Take(dto.PageSize).ToList();
+            }
+
+           
+        }
+
+
+
+        public long Save(<##Model_Class_Name##>EditDto dto)
+        {
+            if (dto.UpdateId > 0)
+            {
+                return Update(dto);
+            }
+            else
+            {
+                return Add(dto);
+            }
+        }
+
+
+        private void ValidateEditDto(<##Model_Class_Name##>EditDto dto)
+        {
+
+        }
+
+        public long Add(<##Model_Class_Name##>EditDto dto)
+        {
+            ValidateEditDto(dto);
+
+            var data = dto.MapTo<<##Model_Class_Name##>>();
+            data.CreatorTime = DateTime.Now;
+            data.LastModifyTime = DateTime.Now;
+
+            var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
+            using (var dao = DBContextFactory.GetDbContext(databaseName))
+            {
+                dao.Set<<##Model_Class_Name##>>().Add(data);
+                dao.SaveChanges();
+                return data.Id;
+            }
+        }
+
+
+        public long Update(<##Model_Class_Name##>EditDto dto)
+        {
+            var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
+            using (var dao = DBContextFactory.GetDbContext(databaseName))
+            {
+                var data = dao.Set<<##Model_Class_Name##>>().FirstOrDefault(tr => tr.Id == dto.UpdateId);
+                if (data == null)
+                    throw new Exception($"错误，Id={dto.UpdateId}的{_modelDescription}记录不存在，修改失败！");
+
+                ValidateEditDto(dto);
+                dto.MapTo<<##Model_Class_Name##>>(data);
+
+                data.LastModifyTime = DateTime.Now;
+                dao.SaveChanges();
+                return data.Id;
+            }
+        }
+
+        public void Remove(params long[] ids)
+        {
+            if (ids == null || ids.Length == 0)
+                throw new Exception("错误，删除的序号为空！");
+
+            var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
+            using (var dao = DBContextFactory.GetDbContext(databaseName))
+            {
+                foreach (var id in ids)
+                {
+                    var data = dao.Set<<##Model_Class_Name##>>().FirstOrDefault(b => b.Id == id);
+                    if (data == null)
+                        throw new Exception($"错误，{_modelDescription}不存在！(Id:{id})");
+
+                    dao.Set<<##Model_Class_Name##>>().Remove(data);
+                }
+                dao.SaveChanges();
+            }
+        }
+
+
+        public <##Model_Class_Name##> GetDataById(long id)
+        {
+            var databaseName = AuthFactory.GetProvider().GetCurrentDatabaseName();
+            using (var dao = DBContextFactory.GetDbContext(databaseName))
+            {
+                return dao.Set<<##Model_Class_Name##>>().FirstOrDefault(b => b.Id == id);
+            }
+        }
+    }
+}
+<##template_End##>

@@ -11,7 +11,7 @@ namespace Winform.Helpers
 {
     public class GenerateCodeHelper
     {
-        public static string GenerateCode(string modelFileName, List<GenerateSettings> settings)
+        public static ModelParameter GetModelParameters(string modelFileName)
         {
             var root = AppDomain.CurrentDomain.BaseDirectory + @"\Temps";
             var rootDir = new DirectoryInfo(root);
@@ -71,79 +71,97 @@ namespace Winform.Helpers
                 }
             }
 
-            var result = new StringBuilder();
-            foreach (var setting in settings)
+            var modelParameter = new ModelParameter
             {
-                var tempContent = File.ReadAllText(Path.Combine(root, setting.TemplateFileName));
-                //读取路径设置
-                var pathBeginIndex = tempContent.IndexOf("<##save_FilePath_Begin##>");
-                var pathEndIndex = tempContent.IndexOf("<##save_FilePath_End##>");
-                if (pathBeginIndex < 0 || pathEndIndex <= 0)
-                {
-                    throw new Exception($"{setting.TemplateFileName},路径的开始和结束标志没有设置！");
-                }
-                //读取路径
-                var path = tempContent.Substring(pathBeginIndex + "<##save_FilePath_Begin##>".Length, pathEndIndex - (pathBeginIndex + "<##save_FilePath_Begin##>".Length));
-
-                var destFileName = path.Replace("<##Model_Class_Name##>", className).
-                    Replace("<##model_Class_Name##>", firstLowerClassName).
-                    Replace("<##Model_Namespace_Not_Root##>", noRootNameSpace.Replace(".", @"\"));
-
-                //文件存在，并且不允许覆盖，不执行生成
-                if (File.Exists(destFileName) && !setting.OverWrite)
-                    continue;
-
-                var dInfo=new FileInfo(destFileName);
-                var dir = dInfo.Directory;
-                if(!dir.Exists)
-                    dir.Create();
-
-                var tempBeginIndex = tempContent.IndexOf("<##template_Begin##>");
-                var tempEndIndex = tempContent.IndexOf("<##template_End##>");
-                if (tempBeginIndex < 0 || tempEndIndex <= 0)
-                {
-                    throw new Exception($"{setting.TemplateFileName},模板的开始和结束标志没有设置！");
-                }
-
-                tempContent = tempContent.Substring(tempBeginIndex + "<##template_Begin##>".Length, tempEndIndex-(tempBeginIndex + "<##template_Begin##>".Length));
-                tempContent = tempContent.Replace("<##Model_Class_Name##>", className).
-                    Replace("<##model_Class_Name##>", firstLowerClassName).
-                    Replace("<##Model_Description##>", classDescription);
-
-                if (string.IsNullOrWhiteSpace(noRootNameSpace))
-                {
-                    tempContent = tempContent.Replace(".<##Model_Namespace_Not_Root##>", "");
-                }
-                else
-                {
-                    tempContent = tempContent.Replace("<##Model_Namespace_Not_Root##>", noRootNameSpace);
-                }
-
-                var fieldStartIndex = tempContent.IndexOf("<##field_Write_Begin##>");
-                if (fieldStartIndex >= 0)
-                {
-                    var fieldEndIndex = tempContent.IndexOf("<##field_Write_End##>");
-                    if (fieldEndIndex <= 0)
-                        throw new Exception("字段写入没有结束标志！");
-
-                    var nextIndex = fieldEndIndex + "<##field_Write_End##>".Length;
-                    var fieldTempContent = tempContent.Substring(fieldStartIndex, nextIndex - fieldStartIndex);
-
-                    var newFieldTempContent = fieldTempContent.Replace("<##field_Write_Begin##>", "").Replace("<##field_Write_End##>", "");
-                    var sb = new StringBuilder();
-                    foreach (var fParameter in fieldParameters)
-                    {
-                        sb.Append(GetFieldContent(newFieldTempContent, fParameter, className));
-                    }
-
-                    tempContent = tempContent.Replace(fieldTempContent, sb.ToString());
-                }
-                File.WriteAllText(destFileName, tempContent, Encoding.UTF8);
-                result.AppendLine($"{destFileName}生成成功！");
-            }
-
-            return result.ToString();
+                ClassName = className,
+                Description = classDescription,
+                NameSpace = modelNameSpace,
+                NoRootNameSpace = noRootNameSpace,
+                FieldParameterses = fieldParameters
+            };
+            return modelParameter;
         }
+
+        //public static string GenerateCode(ModelParameter modelParameter, List<GenerateSettings> settings)
+        //{
+        //    var root = AppDomain.CurrentDomain.BaseDirectory + @"\Temps";
+        //    var rootDir = new DirectoryInfo(root);
+        //    if (!rootDir.Exists)
+        //        rootDir.Create();
+
+        //    var result = new StringBuilder();
+        //    foreach (var setting in settings)
+        //    {
+        //        var tempContent = File.ReadAllText(Path.Combine(root, setting.TemplateFileName));
+        //        //读取路径设置
+        //        var pathBeginIndex = tempContent.IndexOf("<##save_FilePath_Begin##>");
+        //        var pathEndIndex = tempContent.IndexOf("<##save_FilePath_End##>");
+        //        if (pathBeginIndex < 0 || pathEndIndex <= 0)
+        //        {
+        //            throw new Exception($"{setting.TemplateFileName},路径的开始和结束标志没有设置！");
+        //        }
+        //        //读取路径
+        //        var path = tempContent.Substring(pathBeginIndex + "<##save_FilePath_Begin##>".Length, pathEndIndex - (pathBeginIndex + "<##save_FilePath_Begin##>".Length));
+
+        //        var destFileName = path.Replace("<##Model_Class_Name##>", modelParameter.ClassName).
+        //            Replace("<##model_Class_Name##>", modelParameter.FirstLowerModelName).
+        //            Replace("<##Model_Namespace_Not_Root##>", modelParameter.NoRootNameSpace.Replace(".", @"\"));
+
+        //        //文件存在，并且不允许覆盖，不执行生成
+        //        if (File.Exists(destFileName) && !setting.OverWrite)
+        //            continue;
+
+        //        var dInfo = new FileInfo(destFileName);
+        //        var dir = dInfo.Directory;
+        //        if (!dir.Exists)
+        //            dir.Create();
+
+        //        var tempBeginIndex = tempContent.IndexOf("<##template_Begin##>");
+        //        var tempEndIndex = tempContent.IndexOf("<##template_End##>");
+        //        if (tempBeginIndex < 0 || tempEndIndex <= 0)
+        //        {
+        //            throw new Exception($"{setting.TemplateFileName},模板的开始和结束标志没有设置！");
+        //        }
+
+        //        tempContent = tempContent.Substring(tempBeginIndex + "<##template_Begin##>".Length, tempEndIndex - (tempBeginIndex + "<##template_Begin##>".Length));
+        //        tempContent = tempContent.Replace("<##Model_Class_Name##>", modelParameter.ClassName).
+        //            Replace("<##model_Class_Name##>", modelParameter.FirstLowerModelName).
+        //            Replace("<##Model_Description##>", modelParameter.Description);
+
+        //        if (string.IsNullOrWhiteSpace(modelParameter.NoRootNameSpace))
+        //        {
+        //            tempContent = tempContent.Replace(".<##Model_Namespace_Not_Root##>", "");
+        //        }
+        //        else
+        //        {
+        //            tempContent = tempContent.Replace("<##Model_Namespace_Not_Root##>", modelParameter.NoRootNameSpace);
+        //        }
+
+        //        var fieldStartIndex = tempContent.IndexOf("<##field_Write_Begin##>");
+        //        if (fieldStartIndex >= 0)
+        //        {
+        //            var fieldEndIndex = tempContent.IndexOf("<##field_Write_End##>");
+        //            if (fieldEndIndex <= 0)
+        //                throw new Exception("字段写入没有结束标志！");
+
+        //            var nextIndex = fieldEndIndex + "<##field_Write_End##>".Length;
+        //            var fieldTempContent = tempContent.Substring(fieldStartIndex, nextIndex - fieldStartIndex);
+
+        //            var newFieldTempContent = fieldTempContent.Replace("<##field_Write_Begin##>", "").Replace("<##field_Write_End##>", "");
+        //            var sb = new StringBuilder();
+        //            foreach (var fParameter in modelParameter.FieldParameterses)
+        //            {
+        //                sb.Append(GetFieldContent(newFieldTempContent, fParameter, modelParameter.ClassName));
+        //            }
+
+        //            tempContent = tempContent.Replace(fieldTempContent, sb.ToString());
+        //        }
+        //        File.WriteAllText(destFileName, tempContent, Encoding.UTF8);
+        //        result.AppendLine($"{destFileName}生成成功！");
+        //    }
+
+        //    return result.ToString();
+        //}
 
         private static string GetFieldContent(string temp, ModelFieldParameters parameter, string className)
         {
@@ -182,6 +200,144 @@ namespace Winform.Helpers
             }
 
             return str;
+        }
+
+
+        public static string GenerateCode(List<ModelParameter> modelParameters, GenerateSettings setting)
+        {
+            var root = AppDomain.CurrentDomain.BaseDirectory + @"\Temps";
+            var rootDir = new DirectoryInfo(root);
+            if (!rootDir.Exists)
+                rootDir.Create();
+
+            var content = File.ReadAllText(Path.Combine(root, setting.TemplateFileName));
+            //读取路径设置
+            var pathBeginIndex = content.IndexOf("<##save_FilePath_Begin##>");
+            var pathEndIndex = content.IndexOf("<##save_FilePath_End##>");
+            if (pathBeginIndex < 0 || pathEndIndex <= 0)
+            {
+                throw new Exception($"{setting.TemplateFileName},路径的开始和结束标志没有设置！");
+            }
+            //读取路径
+            var path = content.Substring(pathBeginIndex + "<##save_FilePath_Begin##>".Length, pathEndIndex - (pathBeginIndex + "<##save_FilePath_Begin##>".Length));
+
+            var tempBeginIndex = content.IndexOf("<##template_Begin##>");
+            var tempEndIndex = content.IndexOf("<##template_End##>");
+            var result = new StringBuilder();
+            if (tempBeginIndex >= 0 && tempEndIndex > 0)
+            {
+                foreach (var modelParameter in modelParameters)
+                {
+                    var destFileName = path.Replace("<##Model_Class_Name##>", modelParameter.ClassName).
+                        Replace("<##model_Class_Name##>", modelParameter.FirstLowerModelName).
+                        Replace("<##Model_Namespace_Not_Root##>", modelParameter.NoRootNameSpace.Replace(".", @"\"));
+
+                    //文件存在，并且不允许覆盖，不执行生成
+                    if (File.Exists(destFileName) && !setting.OverWrite)
+                        continue;
+
+                    var dInfo = new FileInfo(destFileName);
+                    var dir = dInfo.Directory;
+                    if (!dir.Exists)
+                        dir.Create();
+
+                    var tempContent = content.Substring(tempBeginIndex + "<##template_Begin##>".Length, tempEndIndex - (tempBeginIndex + "<##template_Begin##>".Length));
+                    tempContent = tempContent.Replace("<##Model_Class_Name##>", modelParameter.ClassName).
+                        Replace("<##model_Class_Name##>", modelParameter.FirstLowerModelName).
+                        Replace("<##Model_Description##>", modelParameter.Description);
+
+                    if (string.IsNullOrWhiteSpace(modelParameter.NoRootNameSpace))
+                    {
+                        tempContent = tempContent.Replace(".<##Model_Namespace_Not_Root##>", "");
+                    }
+                    else
+                    {
+                        tempContent = tempContent.Replace("<##Model_Namespace_Not_Root##>", modelParameter.NoRootNameSpace);
+                    }
+
+                    var fieldStartIndex = tempContent.IndexOf("<##field_Write_Begin##>");
+                    if (fieldStartIndex >= 0)
+                    {
+                        var fieldEndIndex = tempContent.IndexOf("<##field_Write_End##>");
+                        if (fieldEndIndex <= 0)
+                            throw new Exception("字段写入没有结束标志！");
+
+                        var nextIndex = fieldEndIndex + "<##field_Write_End##>".Length;
+                        var fieldTempContent = tempContent.Substring(fieldStartIndex, nextIndex - fieldStartIndex);
+
+                        var newFieldTempContent = fieldTempContent.Replace("<##field_Write_Begin##>", "").Replace("<##field_Write_End##>", "");
+                        var sb = new StringBuilder();
+                        foreach (var fParameter in modelParameter.FieldParameterses)
+                        {
+                            sb.Append(GetFieldContent(newFieldTempContent, fParameter, modelParameter.ClassName));
+                        }
+
+                        tempContent = tempContent.Replace(fieldTempContent, sb.ToString());
+                    }
+                    File.WriteAllText(destFileName, tempContent, Encoding.UTF8);
+                    result.AppendLine($"{destFileName}生成成功！");
+                }
+            }
+
+            var foreachBeginIndex = content.IndexOf("<##model_Foreach_Begin##>");
+            var foreachEndIndex = content.IndexOf("<##model_Foreach_End##>");
+            if (foreachBeginIndex >= 0 && foreachEndIndex > 0)
+            {
+                var destFileName = path;
+
+                //文件存在，并且不允许覆盖，不执行生成
+                if (!File.Exists(destFileName) || !setting.OverWrite)
+                {
+                    var dInfo = new FileInfo(destFileName);
+                    var dir = dInfo.Directory;
+                    if (!dir.Exists)
+                        dir.Create();
+
+                    var itemContent = content.Substring(foreachBeginIndex + "<##model_Foreach_Begin##>".Length, foreachEndIndex - (foreachBeginIndex + "<##model_Foreach_Begin##>".Length));
+                    var itemSb=new StringBuilder();
+                    foreach (var modelParameter in modelParameters)
+                    {
+                        var tempContent = itemContent.Replace("<##Model_Class_Name##>", modelParameter.ClassName).
+                            Replace("<##model_Class_Name##>", modelParameter.FirstLowerModelName).
+                            Replace("<##Model_Description##>", modelParameter.Description);
+
+                        if (string.IsNullOrWhiteSpace(modelParameter.NoRootNameSpace))
+                        {
+                            tempContent = tempContent.Replace(".<##Model_Namespace_Not_Root##>", "");
+                        }
+                        else
+                        {
+                            tempContent = tempContent.Replace("<##Model_Namespace_Not_Root##>", modelParameter.NoRootNameSpace);
+                        }
+
+                        var fieldStartIndex = tempContent.IndexOf("<##field_Write_Begin##>");
+                        if (fieldStartIndex >= 0)
+                        {
+                            var fieldEndIndex = tempContent.IndexOf("<##field_Write_End##>");
+                            if (fieldEndIndex <= 0)
+                                throw new Exception("字段写入没有结束标志！");
+
+                            var nextIndex = fieldEndIndex + "<##field_Write_End##>".Length;
+                            var fieldTempContent = tempContent.Substring(fieldStartIndex, nextIndex - fieldStartIndex);
+
+                            var newFieldTempContent = fieldTempContent.Replace("<##field_Write_Begin##>", "").Replace("<##field_Write_End##>", "");
+                            var sb = new StringBuilder();
+                            foreach (var fParameter in modelParameter.FieldParameterses)
+                            {
+                                sb.Append(GetFieldContent(newFieldTempContent, fParameter, modelParameter.ClassName));
+                            }
+
+                            tempContent = tempContent.Replace(fieldTempContent, sb.ToString());
+                        }
+
+                        itemSb.AppendLine(tempContent);
+                    }
+                   
+                    File.WriteAllText(destFileName, itemSb.ToString(), Encoding.UTF8);
+                    result.AppendLine($"{destFileName}生成成功！");
+                }
+            }
+            return result.ToString();
         }
 
     }
