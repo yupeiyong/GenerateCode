@@ -143,6 +143,9 @@
     <None Include="App_Data\Service.cs2.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Temps\Index.cshtmlx.temp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Temps\EditDto.cs.temp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
